@@ -1,0 +1,666 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Model - DCT Manager</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/style.dct.css' />
+
+    <!-- JS -->
+    <script src="js/jquery.ajax.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+
+  </head>
+  <body>
+
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light dct-nav">
+      <button class="btn btn-outline-danger navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i>
+      </button>
+      <button class="btn btn-outline-danger navbar-toggler-left" onclick="location.href='http://contadr.org/generation?active=model&br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>&lu_id=<%=lu_id%>&gn_id=<%=gn_id%>'"><i class="fa fa-chevron-left"></i></button>
+      <a class="navbar-brand" href="/brand" style="color: #cc5252;">
+        <img src="/icons/dct-outline.png" style="height:1.6rem; width:auto;">
+        <font style="font-size: 1rem;"> DCT Manager</font>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">홈</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">영상 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">세차장 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">드라이브 코스 관리</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.youtube.com/user/whwhdtk111" style="color:#e52d27;"><i class="fa fa-youtube"></i> Youtube</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.facebook.com/DoubleClutchTransmission/" style="color:#6d84b4;"><i class="fa fa-facebook-square"></i> Facebook</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="auth/logout">로그아웃</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="margin-top:4rem;">
+
+      <div class="dct-header">
+        <font>[ <font style="color:#cc5252;">MODEL</font> Manager ]</font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <img src="/images/<%=br_id%>/<%=br_engName%>.jpg">
+        <font>:: <%=br_id%> :: <%=br_korName%> (<%=br_engName%>)</font><br>
+        <font>Lineup :: <font style="color:#0275d8;"><%=lu_id%></font> :: <font style="color:#0275d8;"><%=lu_name%></font></font><br>
+        <font>Generation :: <font style="color:#0275d8;"><%=gn_id%></font> :: <font style="color:#0275d8;"><%=gn_name%></font></font><br>
+        <font>Model :: <font style="color:#0275d8;"><%=md_id%></font> :: <font style="color:#0275d8;"><%=md_name%></font></font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <font><font style="color:#0275d8;"><%=mddtl.mddtl_id%></font> :: <font style="color:#0275d8;"><%=mddtl.mddtl_name%></font> :: <font style="color:#0275d8;"><%=bc_name%></font></font>
+      </div><div style="height:1rem;"></div>
+
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a id="spec-link" class="nav-link" href="#spec-pan" role="tab" data-toggle="tab">제원 / 스펙</a>
+        </li>
+        <li class="nav-item">
+          <a id="option-link" class="nav-link" href="#option-pan" role="tab" data-toggle="tab">사양 / 옵션</a>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div role="tabpanel" class="tab-pane fade" id="spec-pan" style="text-align: center;">
+        <div style="height:1rem;"></div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">-</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">가격 (만원)</label>
+          <div class="col-7">
+            <input id="mddtl_price" class="form-control" type="number" value="<%=mddtl.mddtl_price%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">변속기</label>
+          <div class="col-7">
+            <input id="mddtl_at" class="form-control" type="text" value="<%=mddtl.mddtl_at%>" placeholder="ex) A/T">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">승차정원(인)</label>
+          <div class="col-7">
+            <input class="form-control" type="number" value="<%=md.md_maxride%>" disabled>
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">치수</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">전장(㎜)</label>
+          <div class="col-7">
+            <input id="mdsiz_length" class="form-control" type="number" value="<%=mdsiz.mdsiz_length%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">전폭(㎜)</label>
+          <div class="col-7">
+            <input id="mdsiz_width" class="form-control" type="number" value="<%=mdsiz.mdsiz_width%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">전고(㎜)</label>
+          <div class="col-7">
+            <input id="mdsiz_height" class="form-control" type="number" value="<%=mdsiz.mdsiz_height%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">축거(휠베이스)(㎜)</label>
+          <div class="col-7">
+            <input id="mdsiz_wheelbase" class="form-control" type="number" value="<%=mdsiz.mdsiz_wheelbase%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">윤거(전)(㎜)</label>
+          <div class="col-7">
+            <input id="mdsiz_frontthread" class="form-control" type="number" value="<%=mdsiz.mdsiz_frontthread%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">윤거(후)(㎜)</label>
+          <div class="col-7">
+            <input id="mdsiz_rearthread" class="form-control" type="number" value="<%=mdsiz.mdsiz_rearthread%>">
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">엔진</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">형식</label>
+          <div class="col-7">
+            <input id="mdeng_type" class="form-control" type="text" value="<%=mdeng.mdeng_type%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">배기량(㏄)</label>
+          <div class="col-7">
+            <input class="form-control" type="number" value="<%=md.md_displacement%>" disabled>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">최고출력(ps/rpm)</label>
+          <div class="col-7">
+            <input id="mdeng_maxps" class="form-control" type="text" value="<%=mdeng.mdeng_maxps%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">최대토크(kgm/rpm)</label>
+          <div class="col-7">
+            <input id="mdeng_maxkgm" class="form-control" type="text" value="<%=mdeng.mdeng_maxkgm%>">
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">구동</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">굴림방식</label>
+          <div class="col-7">
+            <input id="mddri_type" class="form-control" type="text" value="<%=mddri.mddri_type%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">변속기</label>
+          <div class="col-7">
+            <input id="mddri_transmission" class="form-control" type="text" value="<%=mddri.mddri_transmission%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">4WD 시스템</label>
+          <div class="col-7">
+            <input id="mddri_wd4system" class="form-control" type="text" value="<%=mddri.mddri_wd4system%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">파워스티어링</label>
+          <div class="col-7">
+            <input id="mddri_powerstearing" class="form-control" type="text" value="<%=mddri.mddri_powerstearing%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">서스펜션(전/후)</label>
+          <div class="col-7">
+            <input id="mddri_suspension" class="form-control" type="text" value="<%=mddri.mddri_suspension%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">브레이크(전/후)</label>
+          <div class="col-7">
+            <input id="mddri_break" class="form-control" type="text" value="<%=mddri.mddri_break%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">타이어</label>
+          <div class="col-7">
+            <input id="mddri_tire" class="form-control" type="text" value="<%=mddri.mddri_tire%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">휠</label>
+          <div class="col-7">
+            <input id="mddri_wheel" class="form-control" type="text" value="<%=mddri.mddri_wheel%>">
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">연비</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">연료</label>
+          <div class="col-7">
+            <input class="form-control" type="text" value="<%=md.md_fueltype%>" disabled>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">복합연비(㎞/ℓ)</label>
+          <div class="col-7">
+            <input id="mdfue_complex" class="form-control" type="number" value="<%=mdfue.mdfue_complex%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">도심연비(㎞/ℓ)</label>
+          <div class="col-7">
+            <input id="mdfue_downtown" class="form-control" type="number" value="<%=mdfue.mdfue_downtown%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">고속연비(㎞/ℓ)</label>
+          <div class="col-7">
+            <input id="mdfue_highspeed" class="form-control" type="number" value="<%=mdfue.mdfue_highspeed%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">CO₂배출(g/㎞)</label>
+          <div class="col-7">
+            <input id="mdfue_co2" class="form-control" type="number" value="<%=mdfue.mdfue_co2%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">공차중량(㎏)</label>
+          <div class="col-7">
+            <input id="mdfue_curbweight" class="form-control" type="number" value="<%=mdfue.mdfue_curbweight%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">연료탱크(ℓ)</label>
+          <div class="col-7">
+            <input id="mdfue_gastank" class="form-control" type="number" value="<%=mdfue.mdfue_gastank%>">
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">성능</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">가속(제로백)</label>
+          <div class="col-7">
+            <input id="mdper_zerotohundred" class="form-control" type="number" value="<%=mdper.mdper_zerotohundred%>">
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">최고속도(㎞/h)</label>
+          <div class="col-7">
+            <input id="mdper_maxspeed" class="form-control" type="number" value="<%=mdper.mdper_maxspeed%>">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary btn-block" onclick="modelUpdateSpec();">수 정</button>
+        </div>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="option-pan" style="text-align: center;">
+        <div style="height:1rem;"></div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">-</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">룸미러</label>
+          <div class="col-7">
+            <textarea id="mddtl_roommirror" class="form-control" type="text" rows="3"><%=mddtl.mddtl_roommirror%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">에어컨</label>
+          <div class="col-7">
+            <textarea id="mddtl_airconditioner" class="form-control" type="text" rows="3"><%=mddtl.mddtl_airconditioner%></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">안전</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">에어백</label>
+          <div class="col-7">
+            <textarea id="mdsaf_airbag" class="form-control" type="text" rows="3"><%=mdsaf.mdsaf_airbag%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">주행안전</label>
+          <div class="col-7">
+            <textarea id="mdsaf_drivingsafety" class="form-control" type="text" rows="3"><%=mdsaf.mdsaf_drivingsafety%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">기타</label>
+          <div class="col-7">
+            <textarea id="mdsaf_etc" class="form-control" type="text" rows="3"><%=mdsaf.mdsaf_etc%></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">외장</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">헤드램프</label>
+          <div class="col-7">
+            <textarea id="mdext_headlamp" class="form-control" type="text" rows="3"><%=mdext.mdext_headlamp%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">리어램프</label>
+          <div class="col-7">
+            <textarea id="mdext_rearlamp" class="form-control" type="text" rows="3"><%=mdext.mdext_rearlamp%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">안개등</label>
+          <div class="col-7">
+            <textarea id="mdext_foglights" class="form-control" type="text" rows="3"><%=mdext.mdext_foglights%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">선루프</label>
+          <div class="col-7">
+            <textarea id="mdext_sunroof" class="form-control" type="text" rows="3"><%=mdext.mdext_sunroof%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">아웃사이드미러</label>
+          <div class="col-7">
+            <textarea id="mdext_outsidemirror" class="form-control" type="text" rows="3"><%=mdext.mdext_outsidemirror%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">기타</label>
+          <div class="col-7">
+            <textarea id="mdext_etc" class="form-control" type="text" rows="3"><%=mdext.mdext_etc%></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">시트</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">시트배열</label>
+          <div class="col-7">
+            <textarea id="mdsea_arrangement" class="form-control" type="text" rows="3"><%=mdsea.mdsea_arrangement%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">시트재질</label>
+          <div class="col-7">
+            <textarea id="mdsea_material" class="form-control" type="text" rows="3"><%=mdsea.mdsea_material%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">운전석</label>
+          <div class="col-7">
+            <textarea id="mdsea_driver" class="form-control" type="text" rows="3"><%=mdsea.mdsea_driver%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">동승석</label>
+          <div class="col-7">
+            <textarea id="mdsea_passenger" class="form-control" type="text" rows="3"><%=mdsea.mdsea_passenger%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">2열</label>
+          <div class="col-7">
+            <textarea id="mdsea_column2" class="form-control" type="text" rows="3"><%=mdsea.mdsea_column2%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">기타</label>
+          <div class="col-7">
+            <textarea id="mdsea_etc" class="form-control" type="text" rows="3"><%=mdsea.mdsea_etc%></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">편의</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">스티어링휠</label>
+          <div class="col-7">
+            <textarea id="mdcon_stearingwheel" class="form-control" type="text" rows="3"><%=mdcon.mdcon_stearingwheel%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">파워윈도우</label>
+          <div class="col-7">
+            <textarea id="mdcon_powerwindow" class="form-control" type="text" rows="3"><%=mdcon.mdcon_powerwindow%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">주차보조시스템</label>
+          <div class="col-7">
+            <textarea id="mdcon_parkingsystem" class="form-control" type="text" rows="3"><%=mdcon.mdcon_parkingsystem%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">무선도어잠금장치</label>
+          <div class="col-7">
+            <textarea id="mdcon_wlandoorlock" class="form-control" type="text" rows="3"><%=mdcon.mdcon_wlandoorlock%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">버튼시동 스마트키</label>
+          <div class="col-7">
+            <textarea id="mdcon_smartkey" class="form-control" type="text" rows="3"><%=mdcon.mdcon_smartkey%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">크루즈컨트롤</label>
+          <div class="col-7">
+            <textarea id="mdcon_cruise" class="form-control" type="text" rows="3"><%=mdcon.mdcon_cruise%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">기타</label>
+          <div class="col-7">
+            <textarea id="mdcon_etc" class="form-control" type="text" rows="3"><%=mdcon.mdcon_etc%></textarea>
+          </div>
+        </div>
+
+        <div class="form-group row" style="background-color:#cc5252;color:white;font-size: 1.2rem;">
+          <label class="col-12 col-form-label">Audio/Visual</label>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">오디오</label>
+          <div class="col-7">
+            <textarea id="mdavs_audio" class="form-control" type="text" rows="3"><%=mdavs.mdavs_audio%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">스피커</label>
+          <div class="col-7">
+            <textarea id="mdavs_speaker" class="form-control" type="text" rows="3"><%=mdavs.mdavs_speaker%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">단자</label>
+          <div class="col-7">
+            <textarea id="mdavs_terminal" class="form-control" type="text" rows="3"><%=mdavs.mdavs_terminal%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">내비게이션</label>
+          <div class="col-7">
+            <textarea id="mdavs_navigation" class="form-control" type="text" rows="3"><%=mdavs.mdavs_navigation%></textarea>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label class="col-5 col-form-label">기타</label>
+          <div class="col-7">
+            <textarea id="mdavs_etc" class="form-control" type="text" rows="3"><%=mdavs.mdavs_etc%></textarea>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary btn-block" onclick="modelUpdateOption();">수 정</button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Modal -->
+
+    <div class="wrap-loading loading-display-none">
+      <div><img src="/gif/loading.gif" /></div>
+    </div>
+
+    <script type="text/javascript">
+
+      $(document).ready(function() {
+
+        $('#<%=active%>-link').addClass('active');
+        $('#<%=active%>-pan').addClass('active show');
+
+      });
+
+      function modelUpdateSpec(){
+
+        if(confirm("수정하시겠습니까?") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'model/updatespec',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'mddtl_id': <%=mddtl.mddtl_id%>,
+              'mddtl': {
+                'mddtl_price': $('#mddtl_price').val(),
+                'mddtl_at': $('#mddtl_at').val()
+              },
+              'mdsiz': {
+                'mdsiz_length': $('#mdsiz_length').val(),
+                'mdsiz_width': $('#mdsiz_width').val(),
+                'mdsiz_height': $('#mdsiz_height').val(),
+                'mdsiz_wheelbase': $('#mdsiz_wheelbase').val(),
+                'mdsiz_frontthread': $('#mdsiz_frontthread').val(),
+                'mdsiz_rearthread': $('#mdsiz_rearthread').val()
+              },
+              'mdeng': {
+                'mdeng_type': $('#mdeng_type').val(),
+                'mdeng_maxps': $('#mdeng_maxps').val(),
+                'mdeng_maxkgm': $('#mdeng_maxkgm').val()
+              },
+              'mddri': {
+                'mddri_type': $('#mddri_type').val(),
+                'mddri_transmission': $('#mddri_transmission').val(),
+                'mddri_wd4system': $('#mddri_wd4system').val(),
+                'mddri_powerstearing': $('#mddri_powerstearing').val(),
+                'mddri_suspension': $('#mddri_suspension').val(),
+                'mddri_break': $('#mddri_break').val(),
+                'mddri_tire': $('#mddri_tire').val(),
+                'mddri_wheel': $('#mddri_wheel').val()
+              },
+              'mdfue': {
+                'mdfue_complex': $('#mdfue_complex').val(),
+                'mdfue_downtown': $('#mdfue_downtown').val(),
+                'mdfue_highspeed': $('#mdfue_highspeed').val(),
+                'mdfue_co2': $('#mdfue_co2').val(),
+                'mdfue_curbweight': $('#mdfue_curbweight').val(),
+                'mdfue_gastank': $('#mdfue_gastank').val()
+              },
+              'mdper': {
+                'mdper_zerotohundred': $('#mdper_zerotohundred').val(),
+                'mdper_maxspeed': $('#mdper_maxspeed').val()
+              }
+            },
+            success: function(result){
+              if(result.mddtl){
+                alert('수정 완료');
+                modelReload('spec');
+              }
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function modelUpdateOption(){
+
+        if(confirm("수정하시겠습니까?") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'model/updateoption',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'mddtl_id': <%=mddtl.mddtl_id%>,
+              'mddtl': {
+                'mddtl_roommirror': $('#mddtl_roommirror').val(),
+                'mddtl_airconditioner': $('#mddtl_airconditioner').val()
+              },
+              'mdsaf': {
+                'mdsaf_airbag': $('#mdsaf_airbag').val(),
+                'mdsaf_drivingsafety': $('#mdsaf_drivingsafety').val(),
+                'mdsaf_etc': $('#mdsaf_etc').val()
+              },
+              'mdext': {
+                'mdext_headlamp': $('#mdext_headlamp').val(),
+                'mdext_rearlamp': $('#mdext_rearlamp').val(),
+                'mdext_foglights': $('#mdext_foglights').val(),
+                'mdext_sunroof': $('#mdext_sunroof').val(),
+                'mdext_outsidemirror': $('#mdext_outsidemirror').val(),
+                'mdext_etc': $('#mdext_etc').val()
+              },
+              'mdsea': {
+                'mdsea_arrangement': $('#mdsea_arrangement').val(),
+                'mdsea_material': $('#mdsea_material').val(),
+                'mdsea_driver': $('#mdsea_driver').val(),
+                'mdsea_passenger': $('#mdsea_passenger').val(),
+                'mdsea_column2': $('#mdsea_column2').val(),
+                'mdsea_etc': $('#mdsea_etc').val()
+              },
+              'mdcon': {
+                'mdcon_stearingwheel': $('#mdcon_stearingwheel').val(),
+                'mdcon_powerwindow': $('#mdcon_powerwindow').val(),
+                'mdcon_parkingsystem': $('#mdcon_parkingsystem').val(),
+                'mdcon_wlandoorlock': $('#mdcon_wlandoorlock').val(),
+                'mdcon_smartkey': $('#mdcon_smartkey').val(),
+                'mdcon_cruise': $('#mdcon_cruise').val(),
+                'mdcon_etc': $('#mdcon_etc').val()
+              },
+              'mdavs': {
+                'mdavs_audio': $('#mdavs_audio').val(),
+                'mdavs_speaker': $('#mdavs_speaker').val(),
+                'mdavs_terminal': $('#mdavs_terminal').val(),
+                'mdavs_navigation': $('#mdavs_navigation').val(),
+                'mdavs_etc': $('#mdavs_etc').val()
+              }
+            },
+            success: function(result){
+              if(result.mddtl){
+                alert('수정 완료');
+                modelReload('option');
+              }
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function modelReload(active){
+        var url = "http://contadr.org/model?active="+active+"&br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>&lu_id=<%=lu_id%>&lu_name=<%=lu_name%>&gn_id=<%=gn_id%>&gn_name=<%=gn_name%>&md_id=<%=md_id%>&md_name=<%=md_name%>&bc_name=<%=bc_name%>&mddtl_id=<%=mddtl.mddtl_id%>";
+          $(location).attr('href', url);
+      }
+
+    </script>
+  </body>
+</html>

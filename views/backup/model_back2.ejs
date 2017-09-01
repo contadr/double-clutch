@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=lu_name%></title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+    <style type="text/css">
+      #dialog-background {
+        display: none;
+        position: fixed;
+        top: 0; left: 0;
+        width: 100%; height: 100%;
+        background: rgba(0,0,0,.3);
+        z-index: 10;
+      }
+      #dialog-insert {
+        display: none;
+        position: fixed;
+        left: 10%; top: 10%;
+        width: 80%;
+        overflow: hidden;
+        background: #fff;
+        z-index: 11;
+        padding: 10px;
+      }
+      #dialog-update {
+        display: none;
+        position: fixed;
+        left: 10%; top: 10%;
+        width: 80%;
+        overflow: hidden;
+        background: #fff;
+        z-index: 12;
+        padding: 10px;
+      }
+      #dialog-image {
+        display: none;
+        position: fixed;
+        left: 10%; top: 10%;
+        width: 80%;
+        overflow: hidden;
+        background: #fff;
+        z-index: 12;
+        padding: 10px;
+      }
+    </style>
+
+  </head>
+  <body style="padding: 10px;">
+    <a href="javascript:history.back()" style="float:left;">Preview</a><a href="/login/logout" style="float:right;">Logout</a><br><br>
+
+    <div class="container" style="padding: 0px;">
+
+      <div>
+        <h2><img src="/images/<%=br_id%>/<%=br_engName%>.jpg" style="width:50px;height:50px;"> :: <%=br_id%> :: <%=br_korName%></h2>
+        <h3><%=lu_id%> :: <%=lu_name%> :: <%=cartype%> :: <%=cartypeid%> <button id="open-dialog-insert" class="btn btn-primary"><span class="glyphicon glyphicon-plus"></span></button></h3>
+      </div><br><br><br>
+
+      <% for(var i = 0; i < mds.length; i++){ var model = mds[i]; %>
+        <div style="float:left;width:20rem;height:30rem;margin:5px;border:solid 2px #e8e8e8; padding:5px; text-align: center;">
+          <img src="<%=model.md_imgpath%>" style="height:35%;width:auto;" onclick="opendialogpicture(<%=model.md_id%>);">
+          <div style="height:50%;width:100%;">
+            <p><%=model.md_name%></p>
+            <p><%=model.md_minprice%> ~ <%=model.md_maxprice%> <%=model.md_pricetype%></p>
+            <p><%=model.md_minfuel%> ~ <%=model.md_maxfuel%> KM/L</p>
+            <p><%=model.md_hp%> hp</p>
+          </div>
+          <div style="height:15%;width:100%;">
+            <button class="btn btn-warning" onclick="opendialogupdate(<%=model.md_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+            <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=model.md_id%>)"><span class="glyphicon glyphicon-trash"></span></button>
+            <a id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+          </div>
+        </div>
+      <%}%>
+    </div>
+
+    <div id="dialog-insert">
+      <div style="overflow: hidden;">
+        <a id="close-dialog-insert" style="float:right;">Close</a>
+      </div>
+      <div class="form-group">
+        <label for="model_name">모델 명</label>
+        <input class="form-control" type="text" id="md_name_in" name="md_name">
+      </div>
+      <div class="form-group">
+        <label for="model_minprice">최소 가격</label>
+        <input class="form-control" type="text" id="md_minprice_in" name="md_minprice">
+      </div>
+      <div class="form-group">
+        <label for="model_maxprice">최대 가격</label>
+        <input class="form-control" type="text" id="md_maxprice_in" name="md_maxprice">
+      </div>
+      <div class="form-group">
+        <label for="model_pricetype">화폐 종류 (만원, 유로, 달러 ...)</label>
+        <input class="form-control" type="text" id="md_pricetype_in" name="md_pricetype">
+      </div>
+      <div class="form-group">
+        <label for="model_minfuel">최소 연비</label>
+        <input class="form-control" type="text" id="md_minfuel_in" name="md_minfuel">
+      </div>
+      <div class="form-group">
+        <label for="model_maxfuel">최대 연비</label>
+        <input class="form-control" type="text" id="md_maxfuel_in" name="md_maxfuel">
+      </div>
+      <div class="form-group">
+        <label for="model_hp">마력/토크</label>
+        <input class="form-control" type="text" id="md_hp_in" name="md_hp">
+      </div>
+      <button id="button_insert" class="btn btn-primary" style="width:100%;" onclick="insertBtn();">추 가</button>
+    </div>
+
+    <div id="dialog-image">
+      <form id="form_uploadimage" action="model/uploadimage" method="post" enctype="multipart/form-data">
+      <div style="overflow: hidden;">
+        <a id="close-dialog-image" style="float:right;">Close</a>
+        <input style="display:none;" type="text" id="md_id_img" name="md_id">
+        <input style="display:none;" type="text" name="br_id" value="<%=br_id%>">
+        <input style="display:none;" type="text" name="lu_id" value="<%=lu_id%>">
+        <input style="display:none;"  type="text" name="cartypeid" value="<%=cartypeid%>">
+      </div>
+      <div class="form-group">
+        <label for="model_thumbnail">썸네일 이미지 등록</label>
+        <input type="file" name="user_file" accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))" id="md_thumbnail"/>
+      </div>
+      <div class="form-group">
+        <div id="cma_image" style="width:152px;height:110px; display:none;"></div>
+        <button id="button_insert" class="btn btn-primary" style="width:100%;" onclick="uploadimageBtn();">완료</button>
+      </div>
+      </form>
+    </div>
+
+    <div id="dialog-update">
+        <div style="overflow: hidden;">
+          <input style="display:none;" type="text" id="md_id_up" name="md_id">
+          <input style="display:none;" type="text" name="br_id" value="<%=br_id%>">
+          <input style="display:none;" type="text" name="lu_id" value="<%=lu_id%>">
+          <input style="display:none;"  type="text" name="cartypeid" value="<%=cartypeid%>">
+          <a id="close-dialog-update" style="float:right;">Close</a>
+        </div>
+        <div class="form-group">
+          <label for="model_name_up">모델 명</label>
+          <input class="form-control" type="text" id="md_name_up" name="md_name">
+        </div>
+        <div class="form-group">
+          <label for="model_price">최소 가격</label>
+          <input class="form-control" type="text" id="md_minprice_up" name="md_minprice">
+        </div>
+        <div class="form-group">
+          <label for="model_price">최대 가격</label>
+          <input class="form-control" type="text" id="md_maxprice_up" name="md_maxprice">
+        </div>
+        <div class="form-group">
+          <label for="model_pricetype">화폐 종류 (만원, 유로, 달러 ...)</label>
+          <input class="form-control" type="text" id="md_pricetype_up" name="md_pricetype">
+        </div>
+        <div class="form-group">
+          <label for="model_minfuel_up">최소 연비</label>
+          <input class="form-control" type="text" id="md_minfuel_up" name="md_minfuel">
+        </div>
+        <div class="form-group">
+          <label for="model_maxfuel_up">최대 연비</label>
+          <input class="form-control" type="text" id="md_maxfuel_up" name="md_maxfuel">
+        </div>
+        <div class="form-group">
+          <label for="model_minhp_up">최소 마력/토크</label>
+          <input class="form-control" type="text" id="md_hp_up" name="md_hp">
+        </div>
+        <button id="button_update" class="btn btn-primary" style="width:100%;" onclick="updateBtn();">수 정</button>
+    </div>
+
+    <div id="dialog-background"></div>
+
+    <script type="text/javascript">
+
+      function insertBtn(){
+        if($('#md_name_in').val().replace(/\s/g,"").length == 0){
+          alert("모델명을 입력해주세요.");
+        }else{
+          $.ajax({
+            url: '/model/insert',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              br_id: <%=br_id%>,
+              lu_id: <%=lu_id%>,
+              cartypeid: <%=cartypeid%>,
+              md_name: $('#md_name_in').val(),
+              md_minprice: $('#md_minprice_in').val(),
+              md_maxprice: $('#md_maxprice_in').val(),
+              md_pricetype: $('#md_pricetype_in').val(),
+              md_minfuel: $('#md_minfuel_in').val(),
+              md_maxfuel: $('#md_maxfuel_in').val(),
+              md_hp: $('#md_hp_in').val()
+            },
+            success: function(result){
+              location.reload();
+            }
+          });
+        }
+      }
+
+      function uploadimageBtn(){
+        $('#form_uploadimage').ajaxForm({
+          url: 'model/uploadimage',
+          enctype: 'multipart/form-data',
+          type: 'POST',
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function opendialogpicture(md_id){
+        $('#md_id_img').val(md_id);
+        $('#dialog-image,#dialog-background').show();
+      }
+
+      function updateBtn(){
+        if($('#md_name_up').val().replace(/\s/g,"").length == 0){
+          alert("모델명을 입력해주세요.");
+        }else{
+          $.ajax({
+            url: '/model/update',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              md_id: $("#md_id_up").val(),
+              br_id: <%=br_id%>,
+              lu_id: <%=lu_id%>,
+              cartypeid: <%=cartypeid%>,
+              md_name: $('#md_name_up').val(),
+              md_minprice: $('#md_minprice_up').val(),
+              md_maxprice: $('#md_maxprice_up').val(),
+              md_pricetype: $('#md_pricetype_up').val(),
+              md_minfuel: $('#md_minfuel_up').val(),
+              md_maxfuel: $('#md_maxfuel_up').val(),
+              md_hp: $('#md_hp_up').val()
+            },
+            success: function(result){
+              location.reload();
+            }
+          });
+        }
+      }
+
+      function opendialogupdate(md_id){
+        $.ajax({
+          url: '/model/dialogupdate',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'md_id': md_id
+          },
+          success: function(result){
+            $("#md_id_up").val(result.md_id);
+            $("#md_name_up").val(result.md_name);
+            $("#md_minprice_up").val(result.md_minprice);
+            $("#md_maxprice_up").val(result.md_maxprice);
+            $("#md_pricetype_up").val(result.md_pricetype);
+            $("#md_minfuel_up").val(result.md_minfuel);
+            $("#md_maxfuel_up").val(result.md_maxfuel);
+            $("#md_hp_up").val(result.md_hp);
+            $("#dialog-update,#dialog-background").show();
+            $("#md_name_up").focus();
+          }
+        });
+      }
+
+      function deleteBtn(md_id){
+        $.ajax({
+          url: '/model/delete',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'md_id': md_id,
+            'br_id': <%=br_id%>,
+            'lu_id': <%=lu_id%>,
+            'cartypeid': <%=cartypeid%>
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function getThumbnailPrivew(html, $target) {
+        if (html.files && html.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $target.css('display', '');
+              $target.html('<img src="' + e.target.result + '" style="height:100%;width:100%;"/>');
+          }
+          reader.readAsDataURL(html.files[0]);
+        }
+      }
+
+      $(function(){ // 추가하기 dialog Show
+        $("#open-dialog-insert").click(function () {
+          $("#dialog-insert,#dialog-background").show();
+          $("#md_name").focus();
+        });
+      });
+
+      $(function(){ // 추가하기 dialog Close
+        $("#close-dialog-insert").click(function () {
+          $("#md_name_in").val("");
+          $("#md_minprice_in").val("");
+          $("#md_maxprice_in").val("");
+          $("#md_pricetype_in").val("");
+          $("#md_minfuel_in").val("");
+          $("#md_maxfuel_in").val("");
+          $("#md_hp_in").val("");
+          $("#dialog-insert,#dialog-background").hide();
+        });
+      });
+
+      $(function(){ // 수정하기 dialog Close
+        $("#close-dialog-update").click(function () {
+          $("#md_name_up").val("");
+          $("#md_minprice_up").val("");
+          $("#md_maxprice_up").val("");
+          $("#md_pricetype_up").val("");
+          $("#md_minfuel_up").val("");
+          $("#md_maxfuel_up").val("");
+          $("#md_hp_up").val("");
+          $("#dialog-update,#dialog-background").hide();
+        });
+      });
+
+      $(function(){ // 이미지 dialog Close
+        $("#close-dialog-image").click(function () {
+          $("#md_thumbnail_in").val("");
+          $("#cma_image_in").css('display', 'none');
+          $("#dialog-image,#dialog-background").hide();
+        });
+      });
+
+    </script>
+
+    <!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+  </body>
+</html>

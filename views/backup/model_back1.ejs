@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=lu_name%></title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+  </head>
+  <body style="padding: 10px;">
+
+    <div id="dialog-image">
+      <form id="form_uploadimage" action="model/uploadimage" method="post" enctype="multipart/form-data">
+      <div style="overflow: hidden;">
+      </div>
+      <div class="form-group">
+        <label for="model_thumbnail">썸네일 이미지 등록</label>
+        <input type="file" name="user_file" accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_image'))" id="md_thumbnail"/>
+      </div>
+      <div class="form-group">
+        <div id="cma_image" style="width:152px;height:110px; display:none;"></div>
+        <button id="button_insert" class="btn btn-primary" style="width:100%;" onclick="uploadimageBtn();">완료</button>
+      </div>
+      </form>
+    </div>
+
+    <script type="text/javascript">
+
+      function insertBtn(){
+        if($('#md_name_in').val().replace(/\s/g,"").length == 0){
+          alert("모델명을 입력해주세요.");
+        }else{
+          $.ajax({
+            url: '/model/insert',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              br_id: <%=br_id%>,
+              lu_id: <%=lu_id%>,
+              cartypeid: <%=cartypeid%>,
+              md_name: $('#md_name_in').val(),
+              md_minprice: $('#md_minprice_in').val(),
+              md_maxprice: $('#md_maxprice_in').val(),
+              md_pricetype: $('#md_pricetype_in').val(),
+              md_minfuel: $('#md_minfuel_in').val(),
+              md_maxfuel: $('#md_maxfuel_in').val(),
+              md_hp: $('#md_hp_in').val()
+            },
+            success: function(result){
+              location.reload();
+            }
+          });
+        }
+      }
+
+      function uploadimageBtn(){
+        $('#form_uploadimage').ajaxForm({
+          url: 'model/uploadimage',
+          enctype: 'multipart/form-data',
+          type: 'POST',
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function opendialogpicture(md_id){
+        $('#md_id_img').val(md_id);
+        $('#dialog-image,#dialog-background').show();
+      }
+
+      function updateBtn(){
+        if($('#md_name_up').val().replace(/\s/g,"").length == 0){
+          alert("모델명을 입력해주세요.");
+        }else{
+          $.ajax({
+            url: '/model/update',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              md_id: $("#md_id_up").val(),
+              br_id: <%=br_id%>,
+              lu_id: <%=lu_id%>,
+              cartypeid: <%=cartypeid%>,
+              md_name: $('#md_name_up').val(),
+              md_minprice: $('#md_minprice_up').val(),
+              md_maxprice: $('#md_maxprice_up').val(),
+              md_pricetype: $('#md_pricetype_up').val(),
+              md_minfuel: $('#md_minfuel_up').val(),
+              md_maxfuel: $('#md_maxfuel_up').val(),
+              md_hp: $('#md_hp_up').val()
+            },
+            success: function(result){
+              location.reload();
+            }
+          });
+        }
+      }
+
+      function opendialogupdate(md_id){
+        $.ajax({
+          url: '/model/dialogupdate',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'md_id': md_id
+          },
+          success: function(result){
+            $("#md_id_up").val(result.md_id);
+            $("#md_name_up").val(result.md_name);
+            $("#md_minprice_up").val(result.md_minprice);
+            $("#md_maxprice_up").val(result.md_maxprice);
+            $("#md_pricetype_up").val(result.md_pricetype);
+            $("#md_minfuel_up").val(result.md_minfuel);
+            $("#md_maxfuel_up").val(result.md_maxfuel);
+            $("#md_hp_up").val(result.md_hp);
+            $("#dialog-update,#dialog-background").show();
+            $("#md_name_up").focus();
+          }
+        });
+      }
+
+      function deleteBtn(md_id){
+        $.ajax({
+          url: '/model/delete',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'md_id': md_id,
+            'br_id': <%=br_id%>,
+            'lu_id': <%=lu_id%>,
+            'cartypeid': <%=cartypeid%>
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function getThumbnailPrivew(html, $target) {
+        if (html.files && html.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $target.css('display', '');
+              $target.html('<img src="' + e.target.result + '" style="height:100%;width:100%;"/>');
+          }
+          reader.readAsDataURL(html.files[0]);
+        }
+      }
+
+      $(function(){ // 추가하기 dialog Show
+        $("#open-dialog-insert").click(function () {
+          $("#dialog-insert,#dialog-background").show();
+          $("#md_name").focus();
+        });
+      });
+
+      $(function(){ // 추가하기 dialog Close
+        $("#close-dialog-insert").click(function () {
+          $("#md_name_in").val("");
+          $("#md_minprice_in").val("");
+          $("#md_maxprice_in").val("");
+          $("#md_pricetype_in").val("");
+          $("#md_minfuel_in").val("");
+          $("#md_maxfuel_in").val("");
+          $("#md_hp_in").val("");
+          $("#dialog-insert,#dialog-background").hide();
+        });
+      });
+
+      $(function(){ // 수정하기 dialog Close
+        $("#close-dialog-update").click(function () {
+          $("#md_name_up").val("");
+          $("#md_minprice_up").val("");
+          $("#md_maxprice_up").val("");
+          $("#md_pricetype_up").val("");
+          $("#md_minfuel_up").val("");
+          $("#md_maxfuel_up").val("");
+          $("#md_hp_up").val("");
+          $("#dialog-update,#dialog-background").hide();
+        });
+      });
+
+      $(function(){ // 이미지 dialog Close
+        $("#close-dialog-image").click(function () {
+          $("#md_thumbnail_in").val("");
+          $("#cma_image_in").css('display', 'none');
+          $("#dialog-image,#dialog-background").hide();
+        });
+      });
+
+    </script>
+
+    <!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery.form/3.51/jquery.form.min.js"></script>
+  </body>
+</html>

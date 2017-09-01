@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=lu_name%></title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/style.dct.css' />
+
+    <!-- JS -->
+    <script src="js/jquery.ajax.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+  </head>
+  <body>
+
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light dct-nav">
+      <button class="btn btn-outline-danger navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i>
+      </button>
+      <button class="btn btn-outline-danger navbar-toggler-left" onclick="location.href='lineup?br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>'"><i class="fa fa-chevron-left"></i></button>
+      <a class="navbar-brand" href="/admin" style="color: #cc5252;">
+        <img src="/icons/dct-outline.png" style="height:1.6rem; width:auto;">
+        <font style="font-size: 1rem;"> DCT Manager</font>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">홈</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">영상 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">세차장 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">드라이브 코스 관리</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.youtube.com/user/whwhdtk111" style="color:#e52d27;"><i class="fa fa-youtube"></i> Youtube</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.facebook.com/DoubleClutchTransmission/" style="color:#6d84b4;"><i class="fa fa-facebook-square"></i> Facebook</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="auth/logout">로그아웃</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="margin-top:4rem;">
+
+      <div class="dct-header">
+        <img src="/images/<%=br_id%>/<%=br_engName%>.jpg">
+        <font> :: <%=br_id%> :: <%=br_korName%> (<%=br_engName%>)</font><br>
+        <font><%=lu_id%> :: <%=lu_name%></font><br>
+        <font>(모델 <font style="color:#0275d8;"><%=lu_md_count%></font> 개) (차종 <font style="color:#0275d8;"><%=lu_cart.length%></font> 개)</font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <%
+          for(var i = 0; i < lu_cart.length; i++){
+            var cart = lu_cart[i];
+        %>
+        <font class="dct-header-cart"><%=cart.name%></font>
+        <%}%>
+      </div><div style="height:1rem;"></div>
+
+      <% 
+        for(var i = 0; i < mds.length; i++){ 
+          var model = mds[i]; 
+      %>
+      <div class="dct-model-card">
+        <div class="dct-model-card-order">
+          <font style="width:30%;float:left;font-size:1rem;height:100%;padding:0.2rem;">#</font>
+          <input style="width:40%;float:left" class="form-control form-control-sm" type="number" value="<%=model.md_order%>" id="md_order-<%=model.md_id%>">
+          <button style="width:30%;float:left" class="btn btn-danger btn-sm" onclick="modelOrder(<%=model.md_id%>);"><i class="fa fa-check"></i></button>
+        </div>
+        <div class="dct-model-card-header">
+          <i><%=model.md_id%> :: <%=model.md_name%> :: <font style="color: #0275d8;"><%=model.md_vr_count%></font> 개</i>
+        </div>
+        <div class="dct-model-card-thumbnail" onclick="openModalThumbnail(<%=model.md_id%>);" data-toggle="modal" data-target="#modal-thumbnail">
+          <img src="<%=model.md_imgpath%>" style="height:100%;width:auto;">
+        </div>
+        <div class="dct-model-card-contents">
+          <p><font><%=model.md_minyear%> ~ <%=model.md_maxyear%></font> 년도</p>
+          <p><font><%=model.md_minprice%> ~ <%=model.md_maxprice%></font> <%=model.md_pricetype%></p>
+          <p><font><%=model.md_minfuel%> ~ <%=model.md_maxfuel%></font> <%=model.md_fueltype%></p>
+          <p><font><%=model.md_hp%></font> hp</p>
+          <div style="height:0.3rem;"></div>
+          <% 
+            for(var j = 0; j < model.md_cart.length; j++){
+              var cart = model.md_cart[j];
+          %>
+          <div class="dct-model-card-contents-cart"><%=cart.name%></div>
+          <%}%>
+        </div>
+        <div class="dct-model-card-footer">
+          <a onclick="openModalUpdate(<%=model.md_id%>);" data-toggle="modal" data-target="#modal-update"><i class="fa fa-pencil"></i> 수정</a>
+          <a onclick="modelDelete('<%=model.md_name%>', <%=model.md_id%>)"><i class="fa fa-trash"></i> 삭제</a>
+          <!-- <a onclick="location.href='/grade?md_id=<%=model.md_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>&br_id=<%=br_id%>&lu_id=<%=lu_id%>&lu_name=<%=lu_name%>'"><i class="fa fa-folder-open"></i> 열기</a> -->
+          <a><i class="fa fa-folder-open"></i> 열기</a>
+        </div>
+      </div>
+      <%}%>
+      <div class="dct-model-card-add">
+        <button style="height:100%;width:100%;" id="button_insert" class="btn btn-outline-primary btn-lg" onclick="openModalInsert();" data-toggle="modal" data-target="#modal-insert"><i class="fa fa-plus"></i></button>
+      </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-insert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="color:#0275d8">모델 추가</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label dct-model-label">모델 이름</label>
+              <div class="col-10">
+                <input class="form-control form-control-sm" type="text" id="md_name_in">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label dct-model-label">출시 년도</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" id="md_minyear_in" type="number" maxlength="4" oninput="maxLengthCheck(this)">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxyear_in" maxlength="4" oninput="maxLengthCheck(this)">
+              </div>
+              <label class="col-3 col-form-label dct-model-label-middle">년도</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-1 col-form-label dct-model-label">가격</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minprice_in">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxprice_in">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">화폐</label>
+              <div class="col-3">
+                <select class="form-control form-control-sm" id="md_pricetype_in">
+                  <option selected>만원</option>
+                  <option>유로</option>
+                  <option>달러</option>
+                  <option>파운드</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-1 col-form-label dct-model-label">연비</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minfuel_in">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxfuel_in">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">단위</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="text" id="md_fueltype_in" value="Km/L" disabled>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label dct-model-label">마력</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minhp_in">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxhp_in">
+              </div>
+              <label class="col-3 col-form-label dct-model-label-middle">hp</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-12 col-form-label dct-label">차종 선택</label>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-12">
+                <%
+                  for(var i = 0; i < lu_cart.length; i++){
+                    var cartCB = lu_cart[i];
+                %>
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="cart_in" id="cartin-<%=cartCB.col%>" value="<%=cartCB.col%>">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><%=cartCB.name%></span>
+                </label>
+                <%}%>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="modelInsert();">추 가</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="color:#0275d8">모델 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label dct-model-label">모델 이름</label>
+              <div class="col-10">
+                <input class="form-control form-control-sm" type="text" id="md_name_up">
+                <input id="md_id_up" style="display: none;">
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label dct-model-label">출시 년도</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minyear_up">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxyear_up">
+              </div>
+              <label class="col-3 col-form-label dct-model-label-middle">년도</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-1 col-form-label dct-model-label">가격</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minprice_up">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxprice_up">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">화폐</label>
+              <div class="col-3">
+                <select class="form-control form-control-sm" id="md_pricetype_up">
+                  <option>만원</option>
+                  <option>유로</option>
+                  <option>달러</option>
+                  <option>파운드</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-1 col-form-label dct-model-label">연비</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minfuel_up">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxfuel_up">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">단위</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="text" id="md_fueltype_up" value="Km/L" disabled>
+              </div>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-2 col-form-label dct-model-label">마력</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_minhp_up">
+              </div>
+              <label class="col-1 col-form-label dct-model-label-middle">~</label>
+              <div class="col-3">
+                <input class="form-control form-control-sm" type="number" id="md_maxhp_up">
+              </div>
+              <label class="col-3 col-form-label dct-model-label-middle">hp</label>
+            </div>
+
+            <div class="form-group row">
+              <label class="col-12 col-form-label dct-label">차종 선택</label>
+            </div>
+
+            <div class="form-group row">
+              <div class="col-12">
+                <%
+                  for(var i = 0; i < lu_cart.length; i++){
+                    var cartCB = lu_cart[i];
+                %>
+                <label class="custom-control custom-checkbox">
+                  <input type="checkbox" class="custom-control-input" name="cart_up" id="cartup-<%=cartCB.col%>">
+                  <span class="custom-control-indicator"></span>
+                  <span class="custom-control-description"><%=cartCB.name%></span>
+                </label>
+                <%}%>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="modelUpdate();">수 정</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-thumbnail" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color:#0275d8">썸네일 이미지 등록</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="form_uploadthumbnail" name="form_uploadthumbnail" action="model/uploadthumbnail" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="form-group row">
+                <div class="col-12">
+                  <input style="display:none;"  type="text" id="md_id_thumbnail" name="md_id">
+                  <input style="display:none;"  type="text" name="br_id" value="<%=br_id%>">
+                  <input style="display:none;"  type="text" name="lu_id" value="<%=lu_id%>">
+                  <input type="file" class="form-control-file" name="user_file" accept="image/*" capture="camera" onchange="getThumbnailPrivew(this,$('#cma_thumbnail'))" id="md_thumbnail"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div id="cma_thumbnail" style="width:152px;height:110px; display:none;"></div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" style="width:100%;" onclick="modelThumbnail();">등 록</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <script type="text/javascript">
+
+      function openModalInsert(){
+        $('#md_name_in').val("");
+        $('#md_minyear_in').val("");
+        $('#md_maxyear_in').val("");
+        $('#md_minprice_in').val("");
+        $('#md_maxprice_in').val("");
+        $('#md_minfuel_in').val("");
+        $('#md_maxfuel_in').val("");
+        $('#md_minhp_in').val("");
+        $('#md_maxhp_in').val("");
+        <% for(var i = 0; i < lu_cart.length; i++){ 
+          var cartCB = lu_cart[i]; %>
+        $('#cartin-<%=cartCB.col%>').prop("checked", false); <%}%>
+        $('#md_name_in').focus();
+      }
+      function openModalUpdate(md_id){
+        $.ajax({
+          url:'/model/getmddata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': <%=lu_id%>,
+            'md_id': md_id
+          },
+          success: function(result){
+
+            $('#md_id_up').val(result.md_id);
+            $('#md_name_up').val(result.md_name);
+            $('#md_minyear_up').val(result.md_minyear);
+            $('#md_maxyear_up').val(result.md_maxyear);
+            $('#md_minprice_up').val(result.md_minprice);
+            $('#md_maxprice_up').val(result.md_maxprice);
+            $('#md_minfuel_up').val(result.md_minfuel);
+            $('#md_maxfuel_up').val(result.md_maxfuel);
+            $('#md_fueltype_up').val('Km/L');
+            $('#md_pricetype_up').val(result.md_pricetype);
+
+            var hp = result.md_hp.split(' ~ ');
+            $('#md_minhp_up').val(hp[0]);
+            $('#md_maxhp_up').val(hp[1]);
+
+            for(var i = 0; i < result.md_cart.length; i++){
+              $('#cartup-'+(result.md_cart[i].col)).prop("checked", result.md_cart[i].state);
+            }
+
+            $('#md_name_up').focus();
+          }
+        });
+      }
+
+      function modelInsert(){
+        if($('#md_name_in').val().replace(/\s/g,"").length == 0){
+          alert("모델의 이름을 입력해주세요.");
+          $('#md_name_in').focus();
+        }else{
+          if($('#md_minyear_in').val().replace(/\s/g,"").length == 0 || $('#md_maxyear_in').val().replace(/\s/g,"").length == 0){
+            alert("출시 년도를 정확히 입력해주세요.");
+          }else{
+            if($('input:checkbox[name="cart_in"]:checked').length == 0){
+              alert("차종을 하나 이상 선택해주세요.");
+            }else{
+              if(confirm("모델을 추가하시겠습니까?") == true){
+                var cart = [];
+                $('input:checkbox[name="cart_in"]').each(function(){
+                  if(this.checked){
+                    cart.push(this.value);
+                  }
+                });
+                $.ajax({
+                  url: '/model/insert',
+                  dataType: 'json',
+                  type: 'POST',
+                  data: {
+                    'br_id': <%=br_id%>,
+                    'lu_id': <%=lu_id%>,
+                    'md_name': $('#md_name_in').val(),
+                    'md_minyear': $('#md_minyear_in').val(),
+                    'md_maxyear': $('#md_maxyear_in').val(),
+                    'md_minprice': $('#md_minprice_in').val(),
+                    'md_maxprice': $('#md_maxprice_in').val(),
+                    'md_minfuel': $('#md_minfuel_in').val(),
+                    'md_maxfuel': $('#md_maxfuel_in').val(),
+                    'md_fueltype': $('#md_fueltype_in').val(),
+                    'md_pricetype': $('#md_pricetype_in option:selected').val(),
+                    'md_hp': $('#md_minhp_in').val() + ' ~ ' + $('#md_maxhp_in').val(),
+                    'cart': JSON.stringify(cart)
+                  },
+                  success: function(result){
+                    location.reload();
+                  }
+                });
+              }else{
+                return;
+              }
+            }
+          }
+        }
+      }
+
+      function modelUpdate(){
+        if($('#md_name_up').val().replace(/\s/g,"").length == 0){
+          alert("모델의 이름을 입력해주세요.");
+          $('#md_name_up').focus();
+        }else{
+          if($('#md_minyear_up').val().replace(/\s/g,"").length == 0 || $('#md_maxyear_up').val().replace(/\s/g,"").length == 0){
+            alert("출시 년도를 정확히 입력해주세요.");
+          }else{
+            if($('input:checkbox[name="cart_up"]:checked').length == 0){
+              alert("차종을 하나 이상 선택해주세요.");
+            }else{
+              if(confirm("수정하시겠습니까?") == true){
+                var cart = [];
+                $('input:checkbox[name="cart_up"]').each(function(){
+                  cart.push(this.checked);
+                });
+                $.ajax({
+                  url: '/model/update',
+                  dataType: 'json',
+                  type: 'POST',
+                  data: {
+                    'lu_id': <%=lu_id%>,
+                    'md_id': $('#md_id_up').val(),
+                    'md_name': $('#md_name_up').val(),
+                    'md_minyear': $('#md_minyear_up').val(),
+                    'md_maxyear': $('#md_maxyear_up').val(),
+                    'md_minfuel': $('#md_minfuel_up').val(),
+                    'md_maxfuel': $('#md_maxfuel_up').val(),
+                    'md_fueltype': $('#md_fueltype_up').val(),
+                    'md_minprice': $('#md_minprice_up').val(),
+                    'md_maxprice': $('#md_maxprice_up').val(),
+                    'md_pricetype': $('#md_pricetype_up').val(),
+                    'md_hp': $('#md_minhp_up').val() + ' ~ ' + $('#md_maxhp_up').val(),
+                    'cart': JSON.stringify(cart)
+                  },
+                  success: function(result){
+                    location.reload();
+                  }
+                });
+              }else{
+                return;
+              }
+            }
+          }
+        }
+      }
+
+      function modelDelete(md_name, md_id){
+        if(confirm("정말 " + md_name + " 를(을) 삭제하시겠습니까?") == true){
+          $.ajax({
+            url: 'model/delete',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'br_id': <%=br_id%>,
+              'lu_id': <%=lu_id%>,
+              'md_id': md_id
+            },
+            success: function(result){
+              location.reload();
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function openModalThumbnail(md_id){
+        $('#md_thumbnail').val('');
+        $("#cma_thumbnail").css('display', 'none');
+        $('#md_id_thumbnail').val(md_id);
+      }
+
+      function modelThumbnail(){
+        if($('#md_thumbnail').val().replace(/\s/g,"").length == 0){
+          alert("정확한 이미지 파일을 등록해주세요.");
+        }else{
+          if(confirm("썸네일을 등록하시겠습니까?") == true){
+            $('#form_uploadthumbnail').ajaxForm({
+              url: 'model/uploadthumbnail',
+              enctype: 'multipart/form-data',
+              type: 'POST',
+              success: function(result){
+                location.reload();
+              }
+            });
+            $('#form_uploadthumbnail').submit();
+          }else{
+            return;
+          }
+        }
+      }
+
+      function getThumbnailPrivew(html, $target) {
+        if (html.files && html.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $target.css('display', '');
+              $target.html('<img src="' + e.target.result + '" style="height:100%;width:100%;"/>');
+          }
+          reader.readAsDataURL(html.files[0]);
+        }
+      }
+
+      function maxLengthCheck(object){
+        if (object.value.length > object.maxLength){
+          object.value = object.value.slice(0, object.maxLength);
+        }    
+      }
+
+      function modelOrder(md_id){
+        $.ajax({
+          url:'model/order',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'md_id': md_id,
+            'md_order': $('#md_order-'+md_id).val()
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+    </script>
+  </body>
+</html>

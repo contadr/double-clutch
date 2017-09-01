@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lineup - DCT Manager</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/style.dct.css' />
+
+    <!-- JS -->
+    <script src="js/jquery.ajax.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+
+  </head>
+  <body>
+
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light dct-nav">
+      <button class="btn btn-outline-danger navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i>
+      </button>
+      <button class="btn btn-outline-danger navbar-toggler-left" onclick="location.href='brand'"><i class="fa fa-chevron-left"></i></button>
+      <a class="navbar-brand" href="/brand" style="color: #cc5252;">
+        <img src="/icons/dct-outline.png" style="height:1.6rem; width:auto;">
+        <font style="font-size: 1rem;"> DCT Manager</font>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">홈</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">영상 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">세차장 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">드라이브 코스 관리</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.youtube.com/user/whwhdtk111" style="color:#e52d27;"><i class="fa fa-youtube"></i> Youtube</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.facebook.com/DoubleClutchTransmission/" style="color:#6d84b4;"><i class="fa fa-facebook-square"></i> Facebook</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="auth/logout">로그아웃</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="margin-top:4rem;">
+
+      <div class="dct-header">
+        <font>[ <font style="color:#cc5252">LINEUP</font> Manager ]</font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <img src="/images/<%=br_id%>/<%=br_engName%>.jpg">
+        <font>:: <%=br_id%> :: <%=br_korName%> (<%=br_engName%>)</font><br>
+        <font>(Lineup<font style="color:#0275d8;"> <%=br_lu_count%></font>개)</font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <% for(var i = 0; i < brand_cartype.length; i++){ 
+          var bcs = brand_cartype[i]; %>
+        <div class="dct-lineup-brandcartype">
+          <input class="form-control form-control-sm" type="text" value="<%=bcs.bc_name%>" id="bc_id_<%=bcs.bc_id%>">
+          <button class="btn btn-warning btn-sm" onclick="updateBC(<%=bcs.bc_id%>);"><i class="fa fa-pencil"></i></button>
+          <button class="btn btn-danger btn-sm" onclick="deleteBC(<%=bcs.bc_id%>);"><i class="fa fa-trash"></i></button>
+        </div>
+        <%}%>
+        <div class="dct-lineup-brandcartype-add">
+          <input class="form-control form-control-sm" type="text" id="bc_name_in">
+          <button class="btn btn-primary btn-sm" onclick="insertBC();"><i class="fa fa-plus"></i></button>
+        </div>
+      </div><div style="height:1rem;"></div>
+
+      <div class="dct-lineup-contents-left">
+        <div class="dct-lineup-contents-left-header">LINEUP</div>
+        <div style="height:1rem;"></div>
+
+        <% for(var i = 0; i < lus.length; i++){
+          var lineup = lus[i]; %>
+        <div class="dct-lineup-card">
+          <div class="dct-lineup-card-order">
+            <font style="width:30%;float:left;font-size:1rem;height:100%;padding:0.2rem;">#</font>
+            <input style="width:40%;float:left" class="form-control form-control-sm" type="number" value="<%=lineup.lu_order%>" id="lu_order-<%=lineup.lu_id%>">
+            <button style="width:30%;float:left;" class="btn btn-danger btn-sm" onclick="lineupOrder(<%=lineup.lu_id%>);"><i class="fa fa-check"></i></button>
+          </div>
+          <div class="dct-lineup-card-header">
+            <%=lineup.lu_id%> :: <%=lineup.lu_name%> :: <font style="color:#0275d8;"><%=lineup.lu_gn_count%></font>개
+          </div>
+          <div class="dct-lineup-card-button">
+            <button class="btn btn-danger btn-sm" onclick="openGeneration(<%=lineup.lu_id%>, '<%=lineup.lu_name%>')">자세히 >></button>
+          </div>
+          <div class="dct-lineup-card-footer">
+            <a onclick="openModalUpdate(<%=lineup.lu_id%>);" data-toggle="modal" data-target="#modal-update" style="margin-right:0.25rem;"><i class="fa fa-pencil"></i> 수정</a>
+            <a onclick="lineupDelete('<%=lineup.lu_name%>', <%=lineup.lu_id%>)" style="margin-left:0.25rem;"><i class="fa fa-trash"></i> 삭제</a>
+          </div>
+        </div>
+        <%}%>
+        <div class="dct-lineup-card-add">
+          <button id="button_insert" class="btn btn-outline-primary btn-lg" data-toggle="modal" data-target="#modal-insert" onclick="openModalInsert();"><i class="fa fa-plus"></i></button>
+        </div>
+      </div>
+
+      <div class="dct-lineup-contents-right">
+        <div class="dct-lineup-contents-right-header" id="generations">GENERATION</div>
+        <div style="height:1rem;"></div>
+        <input id="gn_lu_id" type="text" style="display: none;">
+
+        <div id="gns">
+          
+        </div>
+
+        <div id="gns-add" class="gn-card-add displayClass">
+          <div>
+            <input id="gn_order_in" class="form-control form-control-sm" type="number" placeholder="# 순서">
+          </div>
+          <input id="gn_name_in" class="form-control form-control-sm insertinput" type="text">
+          <button class="btn btn-primary btn-sm insertbutton" onclick="generationInsert();"><i class="fa fa-plus"></i></button>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-insert" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="color:#0275d8">Lineup 추가</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label class="col-4 col-form-label">이름</label>
+              <div class="col-8">
+                <input class="form-control" type="text" id="lu_name_in">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="lineupInsert();">추 가</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-update" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="color:#0275d8">Lineup 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label class="col-4 col-form-label">이름</label>
+              <div class="col-8">
+                <input class="form-control" type="text" id="lu_name_up">
+                <input style="display:none;"  type="text" id="lu_id_up">
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="lineupUpdate();">수 정</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-image" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle" style="color:#0275d8">이미지 관리</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="form_image" action="lineup/uploadimage" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="form-group row">
+                <label class="col-12 col-form-label">lineup 썸네일 비율 [ 3:2 ]</label>
+              </div>
+              <div class="form-group row">
+                <div class="col-6">
+                  <div id="cma_image" class="lineup-thumbnail">
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <input type="text" name="br_id" value="<%=br_id%>" style="display:none;">
+                  <input type="text" id="lu_id_img" name="lu_id" style="display:none;">
+                  <input type="file" accept="image/*" id="file-image" name="upload_image" capture="camera" onchange="getImagePrivew(this, $('#cma_image'))">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" style="width:100%;" onclick="lineupImage($('#file-image'), $('#form_image'));">등 록</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap-loading loading-display-none">
+      <div><img src="/gif/loading.gif" /></div>
+    </div>
+
+    <script type="text/javascript">
+
+      function openModalInsert(){
+        $('#lu_name_in').val("");
+        $('#lu_name_in').focus();
+      }
+
+      function openModalUpdate(lu_id){
+        $.ajax({
+          url:'/lineup/getludata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': lu_id
+          },
+          success: function(result){
+            $('#lu_id_up').val(result.lu_id);
+            $('#lu_name_up').val(result.lu_name);
+          }
+        });
+      }
+
+      function openModalImage(lu_id){
+        $.ajax({
+          url: 'lineup/getluimgdata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'br_id': <%=br_id%>,
+            'lu_id': lu_id
+          },
+          success: function(result){
+            $('#lu_id_img').val(lu_id);
+            $('#cma_image').html('<img src="'+result.path+'">');
+          }
+        });
+      }
+
+      function lineupInsert(){
+        if($('#lu_name_in').val().replace(/\s/g,"").length == 0){
+          alert("라인업의 이름을 입력해주세요.");
+          $('#lu_name_in').focus();
+        }else{
+          if(confirm("라인업을 추가하시겠습니까?") == true){
+            $('#modal-insert').hide();
+            $('.wrap-loading').removeClass('loading-display-none');
+            $.ajax({
+              url: '/lineup/insert',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'br_id': <%=br_id%>,
+                'lu_name': $('#lu_name_in').val()
+              },
+              success: function(result){
+                location.reload();
+              }
+            });
+          }else{
+            return;
+          }
+        }
+      }
+      function lineupUpdate(){
+        if($('#lu_name_up').val().replace(/\s/g,"").length == 0){
+          alert("이름을 입력해주세요.");
+          $('#lu_name_up').focus();
+        }else{
+          if(confirm("수정하시겠습니까?") == true){
+            $('#modal-update').hide();
+            $('.wrap-loading').removeClass('loading-display-none');
+            $.ajax({
+              url: '/lineup/update',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'br_id': <%=br_id%>,
+                'lu_id': $('#lu_id_up').val(),
+                'lu_name': $('#lu_name_up').val()
+              },
+              success: function(result){
+                location.reload();
+              }
+            });
+          }else{
+            return;
+          }
+        }
+      }
+      function lineupDelete(lu_name, lu_id){
+        if(confirm("정말 " + lu_name + " 를(을) 삭제하시겠습니까?\n삭제할 시에 하위 모델도 전부 삭제됩니다.") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'lineup/delete',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'br_id': <%=br_id%>,
+              'lu_id': lu_id
+            },
+            success: function(result){
+              location.reload();
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function lineupOrder(lu_id){
+        $('.wrap-loading').removeClass('loading-display-none');
+        $.ajax({
+          url:'lineup/order',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': lu_id,
+            'lu_order': $('#lu_order-'+lu_id).val()
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function lineupImage($file, $form){
+        if($file.val().replace(/\s/g,"").length == 0){
+          alert("정확한 이미지를 등록해주세요.");
+        }else{
+          $('#modal-image').hide();
+          $('.wrap-loading').removeClass('loading-display-none');
+          $form.ajaxForm({
+            url: 'lineup/uploadimage',
+            enctype: 'multipart/form-data',
+            type: 'POST',
+            success: function(result){
+              alert("이미지 등록 완료.");
+              location.reload();
+            }
+          });
+          $form.submit();
+        }
+      }
+
+      function insertBC(){
+        $('.wrap-loading').removeClass('loading-display-none');
+        $.ajax({
+          url: 'lineup/insertbc',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'br_id': <%=br_id%>,
+            'bc_name': $('#bc_name_in').val()
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+      function updateBC(bc_id){
+        $('.wrap-loading').removeClass('loading-display-none');
+        $.ajax({
+          url: 'lineup/updatebc',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'bc_id': bc_id,
+            'bc_name': $('#bc_id_'+bc_id).val()
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+      function deleteBC(bc_id){
+        $('.wrap-loading').removeClass('loading-display-none');
+        $.ajax({
+          url: 'lineup/deletebc',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'bc_id': bc_id
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function getImagePrivew(html, $target) {
+        if (html.files && html.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $target.css('display', '');
+              $target.html('<img src="' + e.target.result + '" />');
+          }
+          reader.readAsDataURL(html.files[0]);
+        }
+      }
+
+      function openGeneration(lu_id, lu_name){
+        $('#gns').html("");
+        $('#gn_lu_id').val(lu_id);
+        $('#generations').html(lu_name);
+        $('#gns-add').removeClass("displayClass");
+        $('.wrap-loading').removeClass('loading-display-none');
+        $.ajax({
+          url: 'lineup/getgndata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': lu_id
+          },
+          success: function(result){
+            $('.wrap-loading').addClass('loading-display-none');
+            $('#gns').append('<button class="btn btn-danger btn-block" style="margin-bottom:1rem !important;" onclick="openModalImage('+lu_id+');" data-toggle="modal" data-target="#modal-image">썸네일 관리</button>');
+            for(var i = 0; i < result.gns.length; i++){
+              $('#gns').append('<div class="gn-card"><input class="form-control form-control-sm" id="gn_order_up_'+result.gns[i].gn_id+'" type="number" value="'+result.gns[i].gn_order+'"><input class="form-control form-control-sm" id="gn_name_up_'+result.gns[i].gn_id+'" type="text" value="'+result.gns[i].gn_name+'"><button class="btn btn-warning btn-sm" onclick="generationUpdate('+result.gns[i].gn_id+');"><i class="fa fa-pencil"></i></button><button class="btn btn-danger btn-sm" style="margin-left:0.5rem;margin-right:0.5rem;" onclick="generationDelete('+result.gns[i].gn_id+');"><i class="fa fa-trash"></i></button><button class="btn btn-info btn-sm" onclick="generationOpen('+result.gns[i].gn_id+');"><i class="fa fa-folder-open"></i></button></div>');
+            }
+          }
+        });
+      }
+
+      function generationInsert(){
+        if($('#gn_name_in').val().replace(/\s/g,"").length == 0){
+          alert("이름을 입력해주세요.");
+          $('#gn_name_in').focus();
+        }else{
+          if(confirm("추가하시겠습니까?") == true){
+            $('.wrap-loading').removeClass('loading-display-none');
+            var order = 0;
+            if($('#gn_order_in').val().replace(/\s/g,"").length == 0){
+              order = 0;
+            }else{
+              order = $('#gn_order_in').val();
+            }
+
+            $.ajax({
+              url: 'lineup/gninsert',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'br_id': <%=br_id%>,
+                'lu_id': $('#gn_lu_id').val(),
+                'gn_name': $('#gn_name_in').val(),
+                'gn_order': order
+              },
+              success: function(result){
+                if(result.gn){
+                  alert("generation 추가 완료");
+                  location.reload();
+                }
+              }
+            });
+          }else{
+            return;
+          }
+        }
+      }
+
+      function generationUpdate(gn_id){
+        if($('#gn_name_up_'+gn_id).val().replace(/\s/g,"").length == 0){
+          alert("이름을 입력해주세요.");
+          $('#gn_name_up'+gn_id).focus();
+        }else{
+          if(confirm("수정하시겠습니까?") == true){
+            $('.wrap-loading').removeClass('loading-display-none');
+            var order = 0;
+            if($('#gn_order_up_'+gn_id).val().replace(/\s/g,"").length == 0){
+              order = 0;
+            }else{
+              order = $('#gn_order_up_'+gn_id).val();
+            }
+
+            $.ajax({
+              url: 'lineup/gnupdate',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'gn_id': gn_id,
+                'gn_name': $('#gn_name_up_'+gn_id).val(),
+                'gn_order': $('#gn_order_up_'+gn_id).val()
+              },
+              success: function(result){
+                if(result.gn){
+                  alert("generation 수정 완료");
+                  location.reload();
+                }
+              }
+            }); 
+          }else{
+            return;
+          }
+        }
+      }
+
+      function generationDelete(gn_id){
+        if(confirm("삭제하시겠습니까?") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'lineup/gndelete',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'br_id': <%=br_id%>,
+              'lu_id': $('#gn_lu_id').val(),
+              'gn_id': gn_id
+            },
+            success: function(result){
+              if(result.gn){
+                alert("generation 삭제 완료");
+                location.reload();
+              }
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function generationOpen(gn_id){
+
+        if(<%=brand_cartype.length%> == 0){
+          alert("상단의 + 버튼으로 모델 타입을 입력해주세요.");
+        }else{
+          var url = "http://contadr.org/generation?active=info&br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>&lu_id="+$('#gn_lu_id').val()+"&gn_id="+gn_id;
+          $(location).attr('href', url);
+        }
+      }
+
+    </script>
+
+  </body>
+</html>

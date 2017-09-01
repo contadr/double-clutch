@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>BRAND - DCT Manager</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/style.dct.css' />
+
+    <!-- JS -->
+    <script src="js/jquery.ajax.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+
+  </head>
+  <body>
+
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light dct-nav">
+      <button class="btn btn-outline-danger navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i>
+      </button>
+      <button class="btn btn-outline-danger navbar-toggler-left" onclick="location.href='/'"><i class="fa fa-chevron-left"></i></button>
+      <a class="navbar-brand" href="/brand" style="color: #cc5252;">
+        <img src="/icons/dct-outline.png" style="height:1.6rem; width:auto;">
+        <font style="font-size: 1rem;"> DCT Manager</font>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">홈</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">영상 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">세차장 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">드라이브 코스 관리</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.youtube.com/user/whwhdtk111" style="color:#e52d27;"><i class="fa fa-youtube"></i> Youtube</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.facebook.com/DoubleClutchTransmission/" style="color:#6d84b4;"><i class="fa fa-facebook-square"></i> Facebook</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="auth/logout">로그아웃</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="margin-top:4rem;">
+
+      <div class="dct-header">
+        <font>[ <font style="color:#cc5252">BRAND</font> Manager ]</font>
+      </div><div style="height:1rem;"></div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/KR.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 대한민국 :: KR :: <font style="color:#0275d8;">7</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnkr" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divkr">
+          <table class="table">
+              <% for(var i = 0; i < krs.length; i++){ var KR = krs[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=KR.br_id%></td>
+                  <td width=50><img src="/images/<%=KR.br_id%>/<%=KR.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=KR.br_korName%></td>
+                  <td style="background-color: white;"><%=KR.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=KR.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=KR.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=KR.br_id%>&br_korName=<%=KR.br_korName%>&br_engName=<%=KR.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/JP.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 일본 :: JP :: <font style="color:#0275d8;">14</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnjp" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divjp">
+          <table class="table">
+              <% for(var i = 0; i < jps.length; i++){ var JP = jps[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=JP.br_id%></td>
+                  <td width=50><img src="/images/<%=JP.br_id%>/<%=JP.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=JP.br_korName%></td>
+                  <td style="background-color: white;"><%=JP.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=JP.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=JP.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=JP.br_id%>&br_korName=<%=JP.br_korName%>&br_engName=<%=JP.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/CN.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 중국 :: CN :: <font style="color:#0275d8;">4</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btncn" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divcn">
+          <table class="table">
+              <% for(var i = 0; i < cns.length; i++){ var CN = cns[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=CN.br_id%></td>
+                  <td width=50><img src="/images/<%=CN.br_id%>/<%=CN.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=CN.br_korName%></td>
+                  <td style="background-color: white;"><%=CN.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=CN.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=CN.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=CN.br_id%>&br_korName=<%=CN.br_korName%>&br_engName=<%=CN.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/IN.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 인도 :: IN :: <font style="color:#0275d8;">2</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnin" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divin">
+          <table class="table">
+              <% for(var i = 0; i < ins.length; i++){ var IN = ins[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=IN.br_id%></td>
+                  <td width=50><img src="/images/<%=IN.br_id%>/<%=IN.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=IN.br_korName%></td>
+                  <td style="background-color: white;"><%=IN.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=IN.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=IN.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=IN.br_id%>&br_korName=<%=IN.br_korName%>&br_engName=<%=IN.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/AU.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 호주 :: AU :: <font style="color:#0275d8;">1</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnau" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divau">
+          <table class="table">
+              <% for(var i = 0; i < aus.length; i++){ var AU = aus[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=AU.br_id%></td>
+                  <td width=50><img src="/images/<%=AU.br_id%>/<%=AU.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=AU.br_korName%></td>
+                  <td style="background-color: white;"><%=AU.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=AU.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=AU.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=AU.br_id%>&br_korName=<%=AU.br_korName%>&br_engName=<%=AU.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/US.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 미국 :: US :: <font style="color:#0275d8;">14</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnus" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divus">
+          <table class="table">
+              <% for(var i = 0; i < uss.length; i++){ var US = uss[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=US.br_id%></td>
+                  <td width=50><img src="/images/<%=US.br_id%>/<%=US.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=US.br_korName%></td>
+                  <td style="background-color: white;"><%=US.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=US.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=US.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=US.br_id%>&br_korName=<%=US.br_korName%>&br_engName=<%=US.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/DE.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 독일 :: DE :: <font style="color:#0275d8;">9</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnde" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divde">
+          <table class="table">
+              <% for(var i = 0; i < des.length; i++){ var DE = des[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=DE.br_id%></td>
+                  <td width=50><img src="/images/<%=DE.br_id%>/<%=DE.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=DE.br_korName%></td>
+                  <td style="background-color: white;"><%=DE.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=DE.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=DE.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=DE.br_id%>&br_korName=<%=DE.br_korName%>&br_engName=<%=DE.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/IT.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 이탈리아 :: IT :: <font style="color:#0275d8;">7</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnit" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divit">
+          <table class="table">
+              <% for(var i = 0; i < its.length; i++){ var IT = its[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=IT.br_id%></td>
+                  <td width=50><img src="/images/<%=IT.br_id%>/<%=IT.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=IT.br_korName%></td>
+                  <td style="background-color: white;"><%=IT.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=IT.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=IT.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=IT.br_id%>&br_korName=<%=IT.br_korName%>&br_engName=<%=IT.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/FR.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 프랑스 :: FR :: <font style="color:#0275d8;">4</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnfr" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divfr">
+          <table class="table">
+              <% for(var i = 0; i < frs.length; i++){ var FR = frs[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=FR.br_id%></td>
+                  <td width=50><img src="/images/<%=FR.br_id%>/<%=FR.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=FR.br_korName%></td>
+                  <td style="background-color: white;"><%=FR.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=FR.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=FR.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=FR.br_id%>&br_korName=<%=FR.br_korName%>&br_engName=<%=FR.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/GB.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 영국 :: GB :: <font style="color:#0275d8;">10</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btngb" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divgb">
+          <table class="table">
+              <% for(var i = 0; i < gbs.length; i++){ var GB = gbs[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=GB.br_id%></td>
+                  <td width=50><img src="/images/<%=GB.br_id%>/<%=GB.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=GB.br_korName%></td>
+                  <td style="background-color: white;"><%=GB.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=GB.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=GB.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=GB.br_id%>&br_korName=<%=GB.br_korName%>&br_engName=<%=GB.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/SE.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 스웨덴 :: SE :: <font style="color:#0275d8;">4</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btnse" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divse">
+          <table class="table">
+              <% for(var i = 0; i < ses.length; i++){ var SE = ses[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=SE.br_id%></td>
+                  <td width=50><img src="/images/<%=SE.br_id%>/<%=SE.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=SE.br_korName%></td>
+                  <td style="background-color: white;"><%=SE.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=SE.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=SE.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=SE.br_id%>&br_korName=<%=SE.br_korName%>&br_engName=<%=SE.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem;">
+        <div style="overflow: hidden;margin-bottom:0.5rem;">
+          <div style="float:left;">
+            <img src="/images/nationalflag/CZ.jpg" style="width:2.5rem; height:1.5rem;">
+            <font> :: 체코 :: CZ :: <font style="color:#0275d8;">1</font> 개</font>
+          </div>
+          <div style="float:right;">
+            <button id="btncz" class="btn btn-primary btn-sm"><i class="fa fa-chevron-down"></i></button>
+          </div>
+        </div>
+        <div id="divcz">
+          <table class="table">
+              <% for(var i = 0; i < czs.length; i++){ var CZ = czs[i]; %>
+              <tbody>
+                <tr>
+                  <td width=50 style="text-align: center;"><%=CZ.br_id%></td>
+                  <td width=50><img src="/images/<%=CZ.br_id%>/<%=CZ.br_engName%>.jpg" style="width:1.5rem; height:1.5rem;"></td>
+                  <td style="background-color: white;"><%=CZ.br_korName%></td>
+                  <td style="background-color: white;"><%=CZ.br_engName%></td>
+                  <td width=50 style="text-align: center;"><%=CZ.br_country%></td>
+                  <td style="text-align: center;"><font style="color:#0275d8;"><%=CZ.br_lu_count%></font> 개</td>
+                  <td width=50 style="text-align: center;"><a href="/lineup?br_id=<%=CZ.br_id%>&br_korName=<%=CZ.br_korName%>&br_engName=<%=CZ.br_engName%>" class="dct-atag"><i class="fa fa-folder-open"></i></a></td>
+                </tr>
+              </tbody>
+              <%}%>
+          </table>
+        </div>
+      </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+      $('#divkr').css('display', 'none');
+      $('#divjp').css('display', 'none');
+      $('#divcn').css('display', 'none');
+      $('#divin').css('display', 'none');
+      $('#divau').css('display', 'none');
+      $('#divus').css('display', 'none');
+      $('#divde').css('display', 'none');
+      $('#divit').css('display', 'none');
+      $('#divfr').css('display', 'none');
+      $('#divgb').css('display', 'none');
+      $('#divse').css('display', 'none');
+      $('#divcz').css('display', 'none');
+
+      $('#btnkr').click(function(){
+        $('#divkr').slideToggle('fast', function() {
+          if($('#btnkr').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnkr').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnkr').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnjp').click(function(){
+        $('#divjp').slideToggle('fast', function() {
+          if($('#btnjp').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnjp').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnjp').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btncn').click(function(){
+        $('#divcn').slideToggle('fast', function() {
+          if($('#btncn').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btncn').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btncn').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnin').click(function(){
+        $('#divin').slideToggle('fast', function() {
+          if($('#btnin').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnin').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnin').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnau').click(function(){
+        $('#divau').slideToggle('fast', function() {
+          if($('#btnau').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnau').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnau').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnus').click(function(){
+        $('#divus').slideToggle('fast', function() {
+          if($('#btnus').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnus').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnus').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnde').click(function(){
+        $('#divde').slideToggle('fast', function() {
+          if($('#btnde').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnde').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnde').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnit').click(function(){
+        $('#divit').slideToggle('fast', function() {
+          if($('#btnit').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnit').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnit').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnfr').click(function(){
+        $('#divfr').slideToggle('fast', function() {
+          if($('#btnfr').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnfr').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnfr').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btngb').click(function(){
+        $('#divgb').slideToggle('fast', function() {
+          if($('#btngb').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btngb').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btngb').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btnse').click(function(){
+        $('#divse').slideToggle('fast', function() {
+          if($('#btnse').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btnse').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btnse').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+
+      $('#btncz').click(function(){
+        $('#divcz').slideToggle('fast', function() {
+          if($('#btncz').html() == '<i class="fa fa-chevron-down"></i>'){
+            $('#btncz').html('<i class="fa fa-chevron-up"></i>');
+          }else{
+            $('#btncz').html('<i class="fa fa-chevron-down"></i>');
+          }
+        });
+      });
+    </script>
+
+  </body>
+</html>

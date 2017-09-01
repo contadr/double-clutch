@@ -1,0 +1,1237 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Generation - DCT Manager</title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/css/bootstrap.min.css" integrity="sha384-rwoIResjU2yc3z8GV/NPeZWAv56rSmLldC3R/AZzGRnGxQQKnKkoFVhFQhNUwEyJ" crossorigin="anonymous">
+
+    <script src="https://code.jquery.com/jquery-3.1.1.slim.min.js" integrity="sha384-A7FZj7v+d/sdmMqp/nOQwliLvUsJfDHW+k9Omg/a/EheAdgtzNs3hpfag6Ed950n" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tether/1.4.0/js/tether.min.js" integrity="sha384-DztdAPBWPRXSA/3eYEEUWrWCy7G5KFbe8fFjk5JAIxUYHKkDx6Qin1DkWx51bBrb" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link rel='stylesheet' href='stylesheets/style.css' />
+    <link rel='stylesheet' href='stylesheets/style.dct.css' />
+
+    <!-- JS -->
+    <script src="js/jquery.ajax.min.js"></script>
+    <script src="js/jquery.form.min.js"></script>
+  </head>
+  <body>
+
+    <nav class="navbar fixed-top navbar-toggleable-md navbar-light dct-nav">
+      <button class="btn btn-outline-danger navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><i class="fa fa-bars"></i>
+      </button>
+      <button class="btn btn-outline-danger navbar-toggler-left" onclick="location.href='lineup?br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>'"><i class="fa fa-chevron-left"></i></button>
+      <a class="navbar-brand" href="/brand" style="color: #cc5252;">
+        <img src="/icons/dct-outline.png" style="height:1.6rem; width:auto;">
+        <font style="font-size: 1rem;"> DCT Manager</font>
+      </a>
+
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/">홈</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">영상 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">세차장 관리</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">드라이브 코스 관리</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.youtube.com/user/whwhdtk111" style="color:#e52d27;"><i class="fa fa-youtube"></i> Youtube</a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="https://www.facebook.com/DoubleClutchTransmission/" style="color:#6d84b4;"><i class="fa fa-facebook-square"></i> Facebook</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="auth/logout">로그아웃</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+
+    <div style="margin-top:4rem;">
+
+      <div class="dct-header">
+        <font>[ <font style="color:#cc5252">GENERATION</font> Manager ]</font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <img src="/images/<%=br_id%>/<%=br_engName%>.jpg">
+        <font>:: <%=br_id%> :: <%=br_korName%> (<%=br_engName%>)</font><br>
+        <font>Lineup :: <font style="color:#0275d8;"><%=lu.lu_id%></font> :: <font style="color:#0275d8;"><%=lu.lu_name%></font></font><br>
+        <font>Generation :: <font style="color:#0275d8;"><%=gn.gn_id%></font> :: <font style="color:#0275d8;"><%=gn.gn_name%></font></font>
+      </div><div style="height:0.5rem;"></div>
+
+      <div class="dct-header">
+        <font>모델 <font style="color:#0275d8;"><%=gn.gn_md_count%></font> 개</font><br>
+        <font>갤러리 <font style="color:#0275d8;"><%=gngal.length%></font> 개</font><br>
+        <font>영상 <font style="color:#0275d8;"><%=gnvid.length%></font> 개</font>
+      </div><div style="height:1rem;"></div>
+
+      <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+          <a id="info-link" class="nav-link" href="#info-pan" role="tab" data-toggle="tab">기본 정보</a>
+        </li>
+        <li class="nav-item">
+          <a id="thumbnail-link" class="nav-link" href="#thumbnail-pan" role="tab" data-toggle="tab">썸네일</a>
+        </li>
+        <li class="nav-item">
+          <a id="gallery-link" class="nav-link" href="#gallery-pan" role="tab" data-toggle="tab">갤러리</a>
+        </li>
+        <li class="nav-item">
+          <a id="video-link" class="nav-link" href="#video-pan" role="tab" data-toggle="tab">영상</a>
+        </li>
+        <li class="nav-item">
+          <a id="model-link" class="nav-link" href="#model-pan" role="tab" data-toggle="tab">모델</a>
+        </li>
+      </ul>
+
+    </div>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+
+      <div role="tabpanel" class="tab-pane fade" id="info-pan">
+        <div style="height:1rem;"></div>
+
+        <div class="form-group row">
+          <label class="col-3 col-form-label">이름</label>
+          <div class="col-5">
+            <input class="form-control" type="text" id="gn_name" value="<%=gn.gn_name%>">
+          </div>
+          <div class="col-4">
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" id="gn_market">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description">시판중</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-3 col-form-label">출시 년도</label>
+          <div class="col-4">
+            <input class="form-control" type="number" id="gn_minyear" value="<%=gn.gn_minyear%>" placeholder="최소">
+          </div>
+          <label class="col-1 col-form-label">~</label>
+          <div class="col-4">
+            <input class="form-control" type="number" id="gn_maxyear" value="<%=gn.gn_maxyear%>" placeholder="최대">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-3 col-form-label">히스토리</label>
+        </div>
+        <div class="form-group">
+          <textarea class="form-control" rows="5" id="gn_history"><%=gn.gn_history%></textarea>
+        </div>
+
+        <div class="form-group row">
+          <label class="col-12 col-form-label">보유한 모델 타입</label>
+        </div>
+        <div class="form-group row">
+          <div class="col-12">
+            <% for(var i = 0; i < bcs.length; i++){
+              var brand_cartype = bcs[i]; %>
+            <label class="custom-control custom-checkbox">
+              <input type="checkbox" class="custom-control-input" name="brandcart" id="bc-<%=brand_cartype.bc_br_id%>_<%=brand_cartype.bc_id%>" value="<%=brand_cartype.bc_id%>">
+              <span class="custom-control-indicator"></span>
+              <span class="custom-control-description"><%=brand_cartype.bc_name%></span>
+            </label>
+            <%}%>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <button class="btn btn-primary btn-block" onclick="generationUpdate();">수 정</button>
+        </div>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="thumbnail-pan">
+        <div style="height:1rem;"></div>
+  
+        <div class="form-group row">
+          <form id="form_thumb1" action="generation/updatethumb" method="post" enctype="multipart/form-data">
+            <div class="col-12">
+              썸네일 1 [ 권장비율 3:2 ] 
+              <input type="text" name="br_id" value="<%=br_id%>" style="display: none;">
+              <input type="text" name="lu_id" value="<%=lu.lu_id%>" style="display: none;">
+              <input type="text" name="gn_id" value="<%=gn.gn_id%>" style="display: none;">
+              <input type="text" name="thumb" value="1" style="display: none;">
+              <button id="open_thumbnail1" type="button" class="btn btn-info btn-sm"><i class="fa fa-folder-open"></i> 불러오기</button>
+              <input type="file" accept="image/*" id="file_thumb1" onchange="getThumbPrivew(this, $('#cma_thumbnail1'))" name="upload_thumb" style="display: none;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="generationThumb($('#file_thumb1'), $('#form_thumb1'));"><i class="fa fa-check"></i> 등록</button>
+            </div>
+          </form>
+        </div>
+        <div class="form-group">
+          <div id="cma_thumbnail1" class="generation-thumbnail1">
+            
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <form id="form_thumb2" action="generation/updatethumb" method="post" enctype="multipart/form-data">
+            <div class="col-12">
+              썸네일 2 [ 권장비율 -:- ] 
+              <input type="text" name="br_id" value="<%=br_id%>" style="display: none;">
+              <input type="text" name="lu_id" value="<%=lu.lu_id%>" style="display: none;">
+              <input type="text" name="gn_id" value="<%=gn.gn_id%>" style="display: none;">
+              <input type="text" name="thumb" value="2" style="display: none;">
+              <button id="open_thumbnail2" type="button" class="btn btn-info btn-sm"><i class="fa fa-folder-open"></i> 불러오기</button>
+              <input type="file" accept="image/*" id="file_thumb2" onchange="getThumbPrivew(this, $('#cma_thumbnail2'))" name="upload_thumb" style="display: none;">
+              <button type="button" class="btn btn-primary btn-sm" onclick="generationThumb($('#file_thumb2'), $('#form_thumb2'));"><i class="fa fa-check"></i> 등록</button>
+            </div>
+          </form>
+        </div>
+        <div class="form-group">
+          <div id="cma_thumbnail2" class="generation-thumbnail2">
+            
+          </div>
+        </div>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="gallery-pan">
+        <div style="height:1rem;"></div>
+        <div id="div-allow-bc-gal">
+          <div style="overflow: hidden;">
+            <% for(var i = 0; i < gnbcs.length; i++){ 
+              var brand_cartype = gnbcs[i]; %>
+            <button id="gallery-bc-<%=brand_cartype.bc_id%>" class="btn btn-outline-primary btn-sm" onclick="bcClickGallery(<%=brand_cartype.bc_id%>, '<%=brand_cartype.bc_name%>')"><%=brand_cartype.bc_name%></button>
+            <%}%>
+          </div>
+          <div style="height:1rem;"></div>
+          <div>
+            <input type="text" id="gngal_bc_id" style="display:none;">
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modal-insertgallery" onclick="openModalInsertGallery();"><i class="fa fa-plus"></i> 등록</button>
+            <button id="gal-modify" class="btn btn-warning btn-sm"  data-toggle="modal" data-target="#modal-updategallery"><i class="fa fa-pencil"></i> 수정</button>
+            <button id="gal-delete" class="btn btn-danger btn-sm" onclick="generationDeleteGallery();"><i class="fa fa-trash""></i> 삭제</button>
+            <button class="btn btn-danger btn-sm" onclick="generationDeleteAllGallery();">모두 삭제</button>
+          </div>
+          <div style="height:1rem;"></div>
+
+          <div id="gals">
+            
+          </div>
+        </div>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="video-pan">
+        <div style="height:1rem;"></div>
+        <div style="overflow: hidden;">
+          <input class="form-control form-control-sm" type="number" id="order_in" placeholder="#" style="width:4rem;float:left;margin-right:0.3rem;">
+          <input class="form-control form-control-sm" type="text" id="videokey_in" placeholder="Youtube API KEY" style="width:8rem;float:left;margin-right:0.3rem;"> 
+          <button class="btn btn-primary btn-sm" style="float:left;" onclick="generationInsertVideo();"><i class="fa fa-plus"></i></button>
+        </div>
+        <div style="height:1rem;"></div>
+
+        <div id="vid"></div>
+
+      </div>
+
+      <div role="tabpanel" class="tab-pane fade" id="model-pan">
+        <div style="height:1rem;"></div>
+        <div id="div-allow-bc-model">
+          <div style="overflow: hidden;">
+            <% for(var i = 0; i < gnbcs.length; i++){ 
+              var brand_cartype = gnbcs[i]; %>
+            <button id="model-bc-<%=brand_cartype.bc_id%>" class="btn btn-outline-primary btn-sm" onclick="bcClickModel(<%=brand_cartype.bc_id%>, '<%=brand_cartype.bc_name%>')"><%=brand_cartype.bc_name%></button>
+            <%}%>
+          </div>
+          <div style="height:1rem;"></div>
+
+          <table class="table">
+            <tbody class="dct-generation-table-header">
+              <tr>
+                <td>#</td>
+                <td>출시년도</td>
+                <td>모델명</td>
+                <td>연료</td>
+                <td>배기량(cc)</td>
+                <td>승차정원(명)</td>
+                <td>세부모델</td>
+                <td>Manage</td>
+              </tr>
+            </tbody>
+            <tbody id="mds" class="dct-generation-table-contents">
+              
+            </tbody>
+          </table>
+          <div id="mds-add">
+            
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="modal-insertgallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color:#0275d8">갤러리 이미지 등록</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="form-insertgallery" action="generation/uploadinsertgallery" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="form-group row">
+                <label id="insertgallery-title" class="col-12 col-form-label"></label>
+              </div>
+              <div class="form-group row">
+                <label class="col-12 col-form-label">권장비율 [ 980x654 px ]</label>
+              </div>
+              <div class="form-group row">
+                <div class="col-6">
+                  <div id="cma_insertimage" class="generation-gal">
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <input type="text" name="br_id" value="<%=br_id%>" style="display:none;">
+                  <input type="text" name="lu_id" value="<%=lu.lu_id%>" style="display:none;">
+                  <input type="text" name="gn_id" value="<%=gn.gn_id%>" style="display:none;">
+                  <input type="text" name="bc_id" id="gngal_bc_id_in" style="display:none;">
+                  <input type="file" id="file-insertgallery" name="upload_gallery" onchange="getImagePrivew(this, $('#cma_insertimage'))" multiple>
+                  <!-- <input type="file" accept="image/*" id="file-insertgallery" name="upload_gallery" capture="camera" onchange="getImagePrivew(this, $('#cma_insertimage'))"> -->
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" style="width:100%;" onclick="generationInsertGallery($('#file-insertgallery'), $('#form-insertgallery'));">등 록</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-updategallery" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color:#0275d8">갤러리 이미지 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <form id="form-updategallery" action="generation/uploadupdategallery" method="post" enctype="multipart/form-data">
+            <div class="modal-body">
+              <div class="form-group row">
+                <label class="col-12 col-form-label">권장비율 [ 980x654 px ]</label>
+              </div>
+              <div class="form-group row">
+                <div class="col-6">
+                  <div id="cma_updateimage" class="generation-gal">
+                    
+                  </div>
+                </div>
+              </div>
+              <div class="form-group row">
+                <div class="col-12">
+                  <input type="text" name="br_id" value="<%=br_id%>" style="display:none;">
+                  <input type="text" name="lu_id" value="<%=lu.lu_id%>" style="display:none;">
+                  <input type="text" name="gn_id" value="<%=gn.gn_id%>" style="display:none;">
+                  <input type="text" name="bc_id" id="gngal_bc_id_up" style="display:none;">
+                  <input id="gngal_id_sel" name="gngal_id" type="text" style="display: none;">
+                  <input id="gngal_image_sel" name="gngal_image" type="text" style="display: none;">
+                  <input type="file" accept="image/*" id="file-updategallery" name="upload_gallery" capture="camera" onchange="getImagePrivew(this, $('#cma_updateimage'))">
+                </div>
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" style="width:100%;" onclick="generationUpdateGallery($('#file-updategallery'), $('#form-updategallery'));">수 정</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-insertmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color:#0275d8">모델 추가</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label id="insertmodel-title" class="col-12 col-form-label"></label>
+              <input id="md_bc_id_in" type="number" style="display: none;">
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">순서 #</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_order_in" placeholder="#">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">모델명</label>
+              <div class="col-8">
+                <input class="form-control" type="text" id="md_name_in">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">출시년도</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_year_in" placeholder="2015 2016...">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">연료</label>
+              <div class="col-8">
+                <!-- <input class="form-control" type="text" id="md_fueltype_in" placeholder="휘발유 경유 전기..."> -->
+                <select id="md_fueltype_in" class="custom-select">
+                  <option selected value="0">선택</option>
+                  <% for(var i = 0; i < ft.length; i++){
+                    var fueltype = ft[i]; %>
+                  <option value="<%=fueltype%>"><%=fueltype%></option>
+                  <%}%>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">배기량</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_displacement_in" placeholder="cc / 전기차x">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">승차정원</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_maxride_in">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">세부모델 <button class="btn btn-outline-primary btn-sm" onclick="mddtlAdd_IN($('#div-mddtl-in'));" style="border-radius:50%;"><i class="fa fa-plus"></i></button></label>
+            </div>
+            <div id="div-mddtl-in">
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="modelInsert();">추 가</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-updatemodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color:#0275d8">모델 수정</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row">
+              <label id="updatemodel-title" class="col-12 col-form-label"></label>
+              <input id="md_id_up" type="number" style="display: none;">
+              <input id="md_bc_id_up" type="number" style="display: none;">
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">순서 #</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_order_up" placeholder="#">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">모델명</label>
+              <div class="col-8">
+                <input class="form-control" type="text" id="md_name_up">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">출시년도</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_year_up" placeholder="2015 2016...">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">연료</label>
+              <div class="col-8">
+                <!-- <input class="form-control" type="text" id="md_fueltype_up" placeholder="휘발유 경유 전기..."> -->
+                <select id="md_fueltype_up" class="custom-select">
+                  <% for(var i = 0; i < ft.length; i++){
+                    var fueltype = ft[i]; %>
+                  <option value="<%=fueltype%>"><%=fueltype%></option>
+                  <%}%>
+                </select>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">배기량</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_displacement_up" placeholder="cc / 전기차x">
+              </div>
+            </div>
+            <div class="form-group row">
+              <label class="col-4 col-form-label">승차정원</label>
+              <div class="col-8">
+                <input class="form-control" type="number" id="md_maxride_up">
+              </div>
+            </div>
+            <div class="form-group">
+              <label class="col-form-label">세부모델 <button class="btn btn-outline-primary btn-sm" onclick="mddtlAdd_UP($('#div-mddtl-up'));" style="border-radius:50%;"><i class="fa fa-plus"></i></button></label>
+            </div>
+            <div id="div-mddtl-up">
+
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" style="width:100%;" onclick="modelUpdate();">수 정</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="modal fade" id="modal-openmodel" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" style="color:#0275d8">세부모델 선택</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div class="form-group row" style="text-align: center;">
+              <label id="openmodel-title" class="col-12 col-form-label"></label>
+            </div>
+            <div id="div-mddtl-open" class="form-group">
+              
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="wrap-loading loading-display-none">
+      <div><img src="/gif/loading.gif" /></div>
+    </div>
+
+    <script type="text/javascript">
+
+      $(document).ready(function() {
+
+        if(<%=gn.gn_market%> == 1){
+          $('#gn_market').prop("checked", true);
+        }else{
+          $('#gn_market').prop("checked", false); 
+        }
+
+        var splitbc = "<%=gn.gn_bc%>".split(',');
+        for(var i = 0; i < splitbc.length; i++){
+          $('#bc-<%=br_id%>_'+(splitbc[i])).prop("checked", true);
+        }
+
+        $('#cma_thumbnail1').html('<img src="<%=gn.gn_thumbnail1%>"/>');
+        $('#cma_thumbnail2').html('<img src="<%=gn.gn_thumbnail2%>"/>');
+
+        $('#gal-modify').prop("disabled", true);
+        $('#gal-delete').prop("disabled", true);
+
+        <% for(var i = 0; i < gnvid.length; i++){
+          var gnvideo = gnvid[i]; %>
+          $.ajax({
+            url: 'https://www.googleapis.com/youtube/v3/videos?key=AIzaSyDdRCQ74Ewx1Jeg6KRlybAdB2nCA2qAvPA&part=snippet,contentDetails,statistics,status',
+            dataType: 'json',
+            type: 'GET',
+            data: {
+              id: '<%=gnvideo.gnvid_videokey%>'
+            },
+            async: false,
+            success: function(result){
+              var api = result.items[0];
+              $('#vid').append('<div class="dct-generation-video-list"><div class="dct-generation-video-thumbnail" onclick="window.open(\''+'https://www.youtube.com/watch?v='+api.id+'\', \''+'new_window'+'\')"><img src="'+api.snippet.thumbnails.high.url+'" /></div><div class="dct-generation-video-contents"><div class="dct-generation-video-order"><input id="order_up_<%=gnvideo.gnvid_id%>" class="form-control form-control-sm" type="number" value="<%=gnvideo.gnvid_order%>" style="width:20%;float:left;margin-right:0.3rem;"><input id="videokey_up_<%=gnvideo.gnvid_id%>" class="form-control form-control-sm" type="text" value="<%=gnvideo.gnvid_videokey%>" style="width:40%;float:left;margin-right:0.3rem;"><button class="btn btn-warning btn-sm" onclick="generationUpdateVideo('+<%=gnvideo.gnvid_id%>+');" style="float:left;margin-right:0.3rem;"><i class="fa fa-pencil""></i></button><button class="btn btn-danger btn-sm" onclick="generationDeleteVideo('+<%=gnvideo.gnvid_id%>+');" style="float:left;"><i class="fa fa-trash"></i></button></div><div class="dct-generation-video-text"><font class="dct-generation-video-text-title">'+api.snippet.title+'</font></div><div class="dct-generation-video-text"><i class="fa fa-eye"></i> '+api.statistics.viewCount+'</div><div class="dct-generation-video-text"><i class="fa fa-thumbs-up"></i> '+api.statistics.likeCount+'&nbsp;&nbsp;&nbsp;<i class="fa fa-thumbs-down"></i> '+api.statistics.dislikeCount+'</div><div class="dct-generation-video-text"><i class="fa fa-comment"></i> '+api.statistics.commentCount+'</div></div></div>');
+            }
+          });
+        <%}%>
+
+        $('#<%=active%>-link').addClass('active');
+        $('#<%=active%>-pan').addClass('active show');
+
+        if(<%=gnbcs[0].bc_id%> == 0){
+          $('#div-allow-bc-gal').html('<p>\'기본정보 -> 모델타입\' 을 추가해주세요.</p>');
+          $('#div-allow-bc-model').html('<p>\'기본정보 -> 모델타입\' 을 추가해주세요.</p>');
+        }else{
+          bcClickModel(<%=gnbcs[0].bc_id%>, '<%=gnbcs[0].bc_name%>');
+          bcClickGallery(<%=gnbcs[0].bc_id%>, '<%=gnbcs[0].bc_name%>');
+        }
+
+        var mddtlid_in = 0;
+        var mddtlid_up = 0;
+        var removemddtl = [];
+      });
+
+      function openModalInsertGallery(){
+        $('#cma_insertimage').html('');
+        $('#file-insertgallery').val('');
+      }
+
+      function generationUpdate(){
+        if($('#gn_name').val().replace(/\s/g,"").length == 0 || $('#gn_minyear').val().replace(/\s/g,"").length == 0){
+          alert("이름 또는 출시년도(최소) 를 입력해주세요.");
+        }else{
+          if($('input:checkbox[name="brandcart"]:checked').length == 0){
+            alert("모델 타입을 하나 이상 선택해주세요.");
+            }else{
+              if(confirm("모델타입 삭제 시 하위 데이터들이 삭제됩니다.\n수정하시겠습니까?") == true){
+              $('.wrap-loading').removeClass('loading-display-none');
+              var maxyear = 0;
+              if($('#gn_maxyear').val().replace(/\s/g,"").length != 0){
+                maxyear = $('#gn_maxyear').val();
+              }
+
+              var brand_cartypeT = [];
+              var brand_cartypeF = [];
+              $('input:checkbox[name="brandcart"]').each(function(){
+                if(this.checked){
+                  brand_cartypeT.push(this.value);
+                }else{
+                  brand_cartypeF.push(this.value);
+                }
+              });
+
+              var market = 0;
+              if($('#gn_market').prop("checked")){
+                market = 1;
+              }
+
+              $.ajax({
+                url: '/generation/updateinfo',
+                dataType: 'json',
+                type: 'POST',
+                data: {
+                  'gn_id': <%=gn.gn_id%>,
+                  'gn_name': $('#gn_name').val(),
+                  'gn_minyear': $('#gn_minyear').val(),
+                  'gn_maxyear': maxyear,
+                  'gn_history': $('#gn_history').val(),
+                  'brand_cartypeT': JSON.stringify(brand_cartypeT),
+                  'brand_cartypeF': JSON.stringify(brand_cartypeF),
+                  'gn_market': market
+                },
+                success: function(result){
+                  if(result.gn){
+                    alert("수정 완료");
+                    generationReload('info');
+                  }else{
+                    alert("삭제하려는 모델 타입에 속하는\n이미지 또는 모델을 먼저 삭제해주세요.");
+                    $('.wrap-loading').addClass('loading-display-none');
+                  }
+                }
+              });
+
+            }else{
+              return;
+            }
+          }
+        }
+      }
+
+      function getThumbPrivew($file, $cma) {
+        if ($file.files && $file.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $cma.html('<img src="' + e.target.result + '"/>');
+          }
+          reader.readAsDataURL($file.files[0]);
+        }
+      }
+
+      function generationThumb($file, $form){
+        if($file.val().replace(/\s/g,"").length == 0){
+          alert("정확한 이미지를 등록해주세요.");
+          $file.click();
+        }else{
+          $form.ajaxForm({
+            url: 'generation/updatethumb',
+            enctype: 'multipart/form-data',
+            type: 'POST',
+            beforeSubmit: function(){
+              $('.wrap-loading').removeClass('loading-display-none');
+            },
+            success: function(result){
+              if(result.gn){
+                alert("썸네일 등록 완료.");
+                generationReload('thumbnail');
+              }
+            }
+          });
+          $form.submit();
+        }
+      }
+
+      $(function () {
+        $('#open_thumbnail1').click(function (e) {
+          e.preventDefault(); $('#file_thumb1').click();
+        });
+      });
+      $(function () {
+        $('#open_thumbnail2').click(function (e) {
+          e.preventDefault(); $('#file_thumb2').click();
+        });
+      });
+
+      function getImagePrivew(html, $target) {
+        if (html.files && html.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function (e) {
+              $target.css('display', '');
+              $target.html('<img src="' + e.target.result + '" />');
+          }
+          reader.readAsDataURL(html.files[0]);
+        }
+      }
+
+      function generationInsertGallery($file, $form){
+        if($file.val().replace(/\s/g,"").length == 0){
+          alert("정확한 이미지를 등록해주세요.");
+        }else{
+          $form.ajaxForm({
+            url: 'generation/uploadinsertgallery',
+            enctype: 'multipart/form-data',
+            type: 'POST',
+            beforeSubmit: function(){
+              $('#modal-insertgallery').hide();
+              $('.wrap-loading').removeClass('loading-display-none');
+            },
+            success: function(result){
+              if(result.gngal){
+                alert("이미지 등록 완료.");
+                generationReload('gallery');
+              }
+            }
+          });
+          $form.submit();
+        }
+      }
+
+      function generationUpdateGallery($file, $form){
+        if($file.val().replace(/\s/g,"").length == 0){
+          alert("정확한 이미지를 등록해주세요.");
+        }else{
+          $form.ajaxForm({
+            url: 'generation/uploadupdategallery',
+            enctype: 'multipart/form-data',
+            type: 'POST',
+            beforeSubmit: function(){
+              $('#modal-updategallery').hide();
+              $('.wrap-loading').removeClass('loading-display-none');
+            },
+            success: function(result){
+              if(result.gngal){
+                alert("이미지 수정 완료.");
+                generationReload('gallery');
+              }
+            }
+          });
+          $form.submit();
+        }
+      }
+
+      function generationDeleteGallery(){
+          if(confirm("정말 삭제하시겠습니까?") == true){
+            $('.wrap-loading').removeClass('loading-display-none');
+            $.ajax({
+              url: '/generation/deletegallery',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'br_id': <%=br_id%>,
+                'lu_id': <%=lu.lu_id%>,
+                'gn_id': <%=gn.gn_id%>,
+                'gngal_id': $('#gngal_id_sel').val(),
+                'gngal_image': $('#gngal_image_sel').val()
+              },
+              success: function(result){
+                if(result.gngal){
+                  alert("삭제 완료");
+                  generationReload('gallery');
+                }
+              }
+            });
+          }else{
+            return;
+          }
+      }
+
+      function generationDeleteAllGallery(){
+        if(confirm("정말 모든 이미지를 삭제하시겠습니까?") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'generation/deleteallgallery',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'br_id': <%=br_id%>,
+              'lu_id': <%=lu.lu_id%>,
+              'gn_id': <%=gn.gn_id%>,
+              'bc_id': $('#gngal_bc_id').val()
+            },
+            success: function(result){
+              if(result.gngal){
+                alert("모두 삭제 완료")
+                generationReload('gallery');
+              }
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function selectGallery(gngal_id, gngal_image){
+        initializeGal();
+        $('#gal-modify').prop("disabled", false);
+        $('#gal-delete').prop("disabled", false);
+        $('#gngal_id_sel').val(gngal_id);
+        $('#gngal_image_sel').val(gngal_image);
+
+        $('#gal-'+gngal_id).addClass('dct-generation-gal-select');
+        $('#cma_updateimage').html('<img src="/images/<%=br_id%>/<%=lu.lu_id%>/<%=gn.gn_id%>/gallery/'+gngal_image+'">');
+      }
+      function initializeGal(){
+        <% for(var i = 0; i < gngal.length; i++){
+          var galleries = gngal[i] %>
+        $('#gal-'+<%=galleries.gngal_id%>).removeClass('dct-generation-gal-select');
+        <%}%>
+      }
+
+      function bcClickGallery(bc_id, bc_name){
+        bcDisActiveGallery();
+        $('.wrap-loading').removeClass('loading-display-none');
+        $('#gallery-bc-'+bc_id).addClass('active');
+        $('#gngal_bc_id').val(bc_id);
+        $('#gngal_bc_id_in').val(bc_id);
+        $('#gngal_bc_id_up').val(bc_id);
+        $('#insertgallery-title').html("<%=lu.lu_name%> <%=gn.gn_name%> <font style='color:#0275d8;'><strong>"+bc_name+"</strong></font> <%=gn.gn_minyear%>~<%=gn.gn_maxyear%>");
+
+        $.ajax({
+          url: 'generation/getgallerydata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            gn_id: <%=gn.gn_id%>,
+            bc_id: bc_id
+          },
+          success: function(result){
+            $('.wrap-loading').addClass('loading-display-none');
+            //append gals
+            for(var i = 0; i < result.gngals.length; i++){
+              $('#gals').append('<div id="gal-'+result.gngals[i].gngal_id+'" class="dct-generation-gal" onclick="selectGallery('+result.gngals[i].gngal_id+', \''+result.gngals[i].gngal_image+'\');"><img src="/images/<%=br_id%>/<%=lu.lu_id%>/<%=gn.gn_id%>/gallery/'+result.gngals[i].gngal_image+'"><font>'+result.gngals[i].gngal_image+'</font></div>');
+            }
+          }
+        });
+      }
+      function bcDisActiveGallery(){
+        $('#gals').html('');
+        $('#gal-modify').prop("disabled", true);
+        $('#gal-delete').prop("disabled", true);
+        <% for(var i = 0; i < bcs.length; i++){
+          var brand_cartype = bcs[i]; %>
+        $('#gallery-bc-<%=brand_cartype.bc_id%>').removeClass('active');
+        <%}%>
+      }
+
+      function generationInsertVideo(){
+        if($('#videokey_in').val().replace(/\s/g,"").length == 0){
+          alert("유튜브 API 키를 입력해주세요.");
+          $('#videokey_in').focus();
+        }else{
+          $('.wrap-loading').removeClass('loading-display-none');
+          var order = 0;
+          if($('#order_in').val().replace(/\s/g,"").length != 0){
+            order = $('#order_in').val();
+          }
+          $.ajax({
+            url: 'generation/insertvideo',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'gn_id': <%=gn.gn_id%>,
+              'gnvid_videokey': $('#videokey_in').val(),
+              'gnvid_order': order
+            },
+            success: function(result){
+              if(result.gnvid){
+                alert("등록 완료");
+                generationReload('video');
+              }else{
+                alert("Youtube API KEY가 올바르지 않습니다.");
+                $('.wrap-loading').addClass('loading-display-none');
+              }
+            }
+          });
+        }
+      }
+
+      function generationUpdateVideo(gnvid_id){
+        if($('#videokey_up_'+gnvid_id).val().replace(/\s/g,"").length == 0){
+          alert("유튜브 API 키를 입력해주세요.");
+          $('#videokey_up_'+gnvid_id).focus();
+        }else{
+
+          $('.wrap-loading').removeClass('loading-display-none');
+          var order = 0;
+          if($('#order_up_'+gnvid_id).val().replace(/\s/g,"").length != 0){
+            order = $('#order_up_'+gnvid_id).val();
+          }
+
+          $.ajax({
+            url: 'generation/updatevideo',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'gnvid_id': gnvid_id,
+              'gnvid_videokey': $('#videokey_up_'+gnvid_id).val(),
+              'gnvid_order': order
+            },
+            success: function(result){
+                if(result.gnvid){
+                  alert("수정 완료");
+                  generationReload('video');
+                }else{
+                  alert("Youtube API KEY가 올바르지 않습니다.");
+                  $('#videokey_up_'+gnvid_id).val('');
+                  $('#videokey_up_'+gnvid_id).focus();
+                  $('.wrap-loading').addClass('loading-display-none');
+                }
+            }
+          });
+        }
+      }
+
+      function generationDeleteVideo(gnvid_id){
+        if(confirm("정말 삭제하시겠습니까?") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'generation/deletevideo',
+            dataType: 'json',
+            type: 'POST',
+            data: { 'gnvid_id': gnvid_id },
+            success: function(result){
+              if(result.gnvid){
+                alert("삭제 완료");
+                generationReload('video');
+              }
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function bcClickModel(bc_id, bc_name){
+        $('.wrap-loading').removeClass('loading-display-none');
+        bcDisActiveModel();
+        $('#model-bc-'+bc_id).addClass('active');
+
+        $.ajax({
+          url: 'generation/getmdsdata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'gn_id': <%=gn.gn_id%>,
+            'bc_id': bc_id
+          },
+          success: function(result){
+            $('.wrap-loading').addClass('loading-display-none');
+            for(var i = 0; i < result.mds.length; i++){
+              var dataItem = result.mds[i];
+              $('#mds').append('<tr>'+
+                '<td>'+result.mds[i].md_order+'</td>'+
+                '<td>'+result.mds[i].md_year+'</td>'+
+                '<td>'+result.mds[i].md_name+'</td>'+
+                '<td>'+result.mds[i].md_fueltype+'</td>'+
+                '<td>'+result.mds[i].md_displacement+'</td>'+
+                '<td>'+result.mds[i].md_maxride+'</td>'+
+                '<td><font style="color:#0275d8;">'+result.mds[i].md_mddtl_count+'</font> 개</td>'+
+                '<td class="dropdown">'+
+                  '<button class="btn btn-outline-primary btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+
+                    '<i class="fa fa-chevron-down"></i>'+
+                  '</button>'+
+                  '<div class="dropdown-menu" aria-labelledby="dropdownMenuButton" style="min-width:3rem;">'+
+                    '<button class="btn dropdown-item" style="color:#ec971f;" data-toggle="modal" data-target="#modal-updatemodel" onclick="openModalUpdateModel('+result.mds[i].md_id+');"><i class="fa fa-pencil"></i></button>'+
+                    '<button class="btn dropdown-item" style="color:#c9302c;" onclick="modelDelete('+result.mds[i].md_id+')"><i class="fa fa-trash"></i></button>'+
+                    '<button class="btn dropdown-item" style="color:#31b0d5;" data-toggle="modal" data-target="#modal-openmodel" onclick="openModalOpenModel('+result.mds[i].md_id+', \''+bc_name+'\');"><i class="fa fa-folder-open"></i></button>'+
+                  '</div>'+
+                '</td>'+
+                '</tr>');
+            }
+          }
+        });
+      
+        $('#mds-add').append('<button class="btn btn-primary btn-block" data-toggle="modal" data-target="#modal-insertmodel" onclick="openModalInsertModel('+bc_id+', \''+bc_name+'\');"><i class="fa fa-plus"></i> 추가</button>');
+      }
+
+      function bcDisActiveModel(){
+        $('#mds').html('');
+        $('#mds-add').html('');
+        <% for(var i = 0; i < bcs.length; i++){
+          var brand_cartype = bcs[i]; %>
+        $('#model-bc-<%=brand_cartype.bc_id%>').removeClass('active');
+        <%}%>
+      }
+
+      function openModalInsertModel(bc_id, bc_name){
+        $('#md_order_in').val('');
+        $('#md_name_in').val('');
+        $('#md_year_in').val('');
+        $('#md_fueltype_in').val(0);
+        $('#md_displacement_in').val('');
+        $('#md_maxride_in').val('');
+        $('#md_bc_id_in').val(bc_id);
+
+        $('#insertmodel-title').html("<%=lu.lu_name%> <%=gn.gn_name%> <font style='color:#0275d8;'><strong>"+bc_name+"</strong></font> <%=gn.gn_minyear%>~<%=gn.gn_maxyear%>");
+
+        mddtlid_in = 0;
+        $('#div-mddtl-in').html('');
+      }
+
+      function openModalUpdateModel(md_id){
+        $('#div-mddtl-up').html('');
+        mddtlid_up = 0;
+        removemddtl = [];
+
+        $.ajax({
+          url: 'generation/getmddata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            md_id: md_id
+          },
+          success: function(result){
+            $('#md_id_up').val(result.md.md_id);
+            $('#md_bc_id_up').val(result.md.md_bc_id);
+            $('#md_order_up').val(result.md.md_order);
+            $('#md_year_up').val(result.md.md_year);
+            $('#md_name_up').val(result.md.md_name);
+            $('#md_fueltype_up').val(result.md.md_fueltype);
+            $('#md_displacement_up').val(result.md.md_displacement);
+            $('#md_maxride_up').val(result.md.md_maxride);
+
+            mddtlid_up = result.mddtls.length;
+
+            for(var i = 0; i < result.mddtls.length; i++){
+              $('#div-mddtl-up').append('<div id="mddtl-up-'+(i+1)+'" class="form-group row"><div class="col-8"><input name="mddtl-id[]" type="text" value="'+result.mddtls[i].mddtl_id+'" style="display:none;"><input name="mddtl-name-up-old[]" class="form-control form-control-sm" type="text" value="'+result.mddtls[i].mddtl_name+'"></div><div class="col-4"><button class="btn btn-outline-danger btn-sm" style="border-radius:50%;" onclick="mddtlRemove_UP('+(i+1)+', '+result.mddtls[i].mddtl_id+');"><i class="fa fa-minus"></i></button></div></div>');
+            }
+          }
+        });
+      }
+
+      function openModalOpenModel(md_id, bc_name){
+        $('#div-mddtl-open').html('');
+        $.ajax({
+          url: 'generation/getmddata',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            md_id: md_id
+          },
+          success: function(result){
+            $('#openmodel-title').html(result.md.md_year+" <%=lu.lu_name%> "+bc_name+"<br><%=gn.gn_name%> "+result.md.md_name);
+
+            for(var i = 0; i < result.mddtls.length; i++){
+              $('#div-mddtl-open').append('<button class="btn btn-primary btn-sm" style="margin:0.3rem;" onclick="modelOpen('+result.md.md_id+', \''+result.md.md_name+'\', \''+bc_name+'\', '+result.mddtls[i].mddtl_id+')">'+result.mddtls[i].mddtl_name+'</button>');
+            }
+          }
+        });
+      }
+
+      function modelInsert(){
+        if($('#md_name_in').val().replace(/\s/g,"").length == 0 || $('#md_year_in').val().replace(/\s/g,"").length == 0 || $('#md_fueltype_in').val() == 0){
+          alert("모델명or출시년도or연료 는 필수 입력사항입니다.");
+        }else{
+          if(confirm("모델을 추가하시겠습니까?") == true){
+
+            var inp = document.getElementsByName("mddtl-name-in[]");
+            var mddtlName = [];
+            for(var i = 0; i < $("input[name='mddtl-name-in[]']").length; i++){
+              if(inp[i].value.replace(/\s/g,"").length != 0){
+                mddtlName.push(inp[i].value);
+              }
+            }
+
+            $('#modal-insertmodel').hide();
+            $('.wrap-loading').removeClass('loading-display-none');
+            var order = 0;
+            if($('#md_order_in').val().replace(/\s/g,"").length != 0){
+              order = $('#md_order_in').val();
+            }
+
+            $.ajax({
+              url: 'generation/mdinsert',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'br_id': <%=br_id%>,
+                'lu_id': <%=lu.lu_id%>,
+                'gn_id': <%=gn.gn_id%>,
+                'md_bc_id': $('#md_bc_id_in').val(),
+                'md_order': order,
+                'md_name': $('#md_name_in').val(),
+                'md_year': $('#md_year_in').val(),
+                'md_fueltype': $('#md_fueltype_in').val(),
+                'md_displacement': $('#md_displacement_in').val(),
+                'md_maxride': $('#md_maxride_in').val(),
+                'mddtl_name': mddtlName
+              },
+              success: function(result){
+                if(result.md){
+                  alert('추가 완료');
+                  generationReload('model');
+                }
+              }
+            });
+          }else{
+            return;
+          }
+        }
+      }
+
+      function modelUpdate(){
+        if($('#md_name_up').val().replace(/\s/g,"").length == 0 || $('#md_year_up').val().replace(/\s/g,"").length == 0){
+          alert("모델명or출시년도or연료 는 필수 입력사항입니다.");
+        }else{
+
+          if(confirm("모델을 수정하시겠습니까?") == true){
+
+            var inp_new = document.getElementsByName("mddtl-name-up-new[]");
+            var mddtlName_new = [];
+            for(var i = 0; i < $("input[name='mddtl-name-up-new[]']").length; i++){
+              if(inp_new[i].value.replace(/\s/g,"").length != 0){
+                mddtlName_new.push(inp_new[i].value);
+              }
+            }
+
+            var inp_old = document.getElementsByName("mddtl-name-up-old[]");
+            var mddtlName_old = [];
+            for(var i = 0; i < $("input[name='mddtl-name-up-old[]']").length; i++){
+              if(inp_old[i].value.replace(/\s/g,"").length != 0){
+                mddtlName_old.push(inp_old[i].value);
+              }
+            }
+
+            var inp_id = document.getElementsByName("mddtl-id[]");
+            var mddtlId = [];
+            for(var i = 0; i < $("input[name='mddtl-id[]']").length; i++){
+              if(inp_id[i].value.replace(/\s/g,"").length != 0){
+                mddtlId.push(inp_id[i].value);
+              }
+            }
+
+            $('#modal-updatemodel').hide();
+            $('.wrap-loading').removeClass('loading-display-none');
+            var order = 0;
+            if($('#md_order_up').val().replace(/\s/g,"").length != 0){
+              order = $('#md_order_up').val();
+            }
+
+            $.ajax({
+              url: 'generation/mdupdate',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'md_id': $('#md_id_up').val(),
+                'md_order': order,
+                'md_name': $('#md_name_up').val(),
+                'md_year': $('#md_year_up').val(),
+                'md_fueltype': $('#md_fueltype_up').val(),
+                'md_displacement': $('#md_displacement_up').val(),
+                'md_maxride': $('#md_maxride_up').val(),
+                'mddtl_name_new': mddtlName_new,
+                'mddtl_name_old': mddtlName_old,
+                'removemddtl': removemddtl,
+                'updatemddtl': mddtlId
+              },
+              success: function(result){
+                if(result.md){
+                  alert('수정 완료');
+                  generationReload('model');
+                }
+              }
+            });
+          }else{
+            return;
+          }
+        }
+      }
+
+      function modelDelete(md_id){
+        if(confirm("정말 삭제하시겠습니까?") == true){
+          $('.wrap-loading').removeClass('loading-display-none');
+          $.ajax({
+            url: 'generation/mddelete',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'gn_id': <%=gn.gn_id%>,
+              'md_id': md_id
+            },
+            success: function(result){
+              if(result.md){
+                alert('삭제 완료');
+                generationReload('model');
+              }
+            }
+          });
+        }else{
+          return;
+        }
+      }
+
+      function modelOpen(md_id, md_name, bc_name, mddtl_id){
+        var url = "http://contadr.org/model?active=spec&br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>&lu_id=<%=lu.lu_id%>&lu_name=<%=lu.lu_name%>&gn_id=<%=gn.gn_id%>&gn_name=<%=gn.gn_name%>&md_id="+md_id+"&md_name="+md_name+"&bc_name="+bc_name+"&mddtl_id="+mddtl_id;
+        $(location).attr('href', url);
+      }
+
+      function mddtlAdd_IN($div){
+        mddtlid_in++;
+        $div.append('<div id="mddtl-in-'+mddtlid_in+'" class="form-group row"><div class="col-8"><input name="mddtl-name-in[]" class="form-control form-control-sm" type="text"></div><div class="col-4"><button class="btn btn-outline-danger btn-sm" style="border-radius:50%;" onclick="mddtlRemove_IN('+mddtlid_in+')"><i class="fa fa-minus"></i></button></div></div>');
+      }
+      function mddtlRemove_IN(id){
+        $('#mddtl-in-'+id).remove();
+      }
+
+      function mddtlAdd_UP($div){
+        mddtlid_up++;
+        $div.append('<div id="mddtl-up-'+mddtlid_up+'" class="form-group row"><div class="col-8"><input name="mddtl-name-up-new[]" class="form-control form-control-sm" type="text"></div><div class="col-4"><button class="btn btn-outline-danger btn-sm" style="border-radius:50%;" onclick="mddtlRemove_UP('+mddtlid_up+', 0);"><i class="fa fa-minus"></i></button></div></div>');
+      }
+      function mddtlRemove_UP(id, mddtl_id){
+        if(mddtl_id != 0){
+          removemddtl.push(mddtl_id);
+        }
+        $('#mddtl-up-'+id).remove();
+      }
+
+      function generationReload(active){
+        var url = "http://contadr.org/generation?active="+active+"&br_id=<%=br_id%>&br_korName=<%=br_korName%>&br_engName=<%=br_engName%>&lu_id=<%=lu.lu_id%>&gn_id=<%=gn.gn_id%>";
+        $(location).attr('href', url);
+      }
+
+    </script>
+  </body>
+</html>

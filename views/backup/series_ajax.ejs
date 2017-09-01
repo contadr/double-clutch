@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=br_korName%></title>
+
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+  </head>
+  <body>
+    <a href="/admin" style="float:left;">Preview</a><a href="/login/logout" style="float:right;">Logout</a><br><br>
+
+    <div class="container">
+      <h1><img src="/images/<%=br_id%>/<%=br_engName%>.jpg" style="width:7vh;height:7vh;"> :: <%=br_korName%> :: <%=br_id%></h1>
+      <div>
+        <input type="text" size="10" id="sr_name">
+        <button id="button_insert" class="btn btn-primary" onclick="insertBtn();"><span class="glyphicon glyphicon-plus"></span></button>
+      </div><br><br>
+
+      <div id="list">
+        <%
+          for(var i = 0; i < sr.length; i++){
+            var series = sr[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input id="<%=series.sr_id%>" type="text" value="<%=series.sr_name%>" size="5">
+          <button id="button_update" class="btn btn-warning" style="margin-left:1px;" onclick="updateBtn(<%=series.sr_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" style="margin-left:1px;" onclick="deleteBtn(<%=series.sr_id%>);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?sr_id=<%=series.sr_id%>" id="button_info" class="btn btn-info" style="margin-left:1px;"><span class="glyphicon glyphicon-info-sign"></span></a>
+        </div>
+        <%}%>
+      </div>
+
+    </div>
+
+    <script type="text/javascript">
+
+      function insertBtn(){
+
+        if($('#sr_name').val().replace(/\s/g,"").length == 0){
+          alert("공백 불가");
+          $('#sr_name').val('');
+          $('#sr_name').focus();
+        }else{
+          $.ajax({
+            url: '/series/insert',
+            dataType: 'json',
+            type: 'POST',
+            data: {
+              'sr_name': $('#sr_name').val(),
+              'br_id': <%=br_id%>
+            },
+            success: function(result){
+              // $('#list').empty();
+              // for(var i = 0; i < result.sr.length; i++){
+              //   $('#list').append(
+              //     "<div style='float:left;margin:5px;'><input id='" + result.sr[i].sr_id + "' type='text' value='" + result.sr[i].sr_name + "' size='5'> <button id='button_update' class='btn btn-warning' style='margin-left:1px;' onclick='updateBtn(" + result.sr[i].sr_id + ");'><span class='glyphicon glyphicon-pencil'></span></button> <button id='button_delete' class='btn btn-danger' style='margin-left:1px;' onclick='deleteBtn(" + result.sr[i].sr_id + ");'><span class='glyphicon glyphicon-trash'></span></button> <a href='/model?sr_id=" + result.sr[i].sr_id + "' id='button_info' class='btn btn-info' style='margin-left:1px;'><span class='glyphicon glyphicon-info-sign'></span></a></div>"
+              //   );
+              // }
+              //$('#sr_name').val('');
+              //$('#sr_name').focus();
+              location.reload();
+            }
+          });
+        }
+      }
+
+      function updateBtn(sr_id){
+        $.ajax({
+          url: '/series/update',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'sr_id': sr_id,
+            'br_id': <%=br_id%>,
+            'sr_name': $('#' + sr_id + '').val()
+          },
+          success: function(result){
+            // $('#list').empty();
+            // for(var i = 0; i < result.sr.length; i++){
+            //   $('#list').append(
+            //     "<div style='float:left;margin:5px;'><input id='" + result.sr[i].sr_id + "' type='text' value='" + result.sr[i].sr_name + "' size='5'> <button id='button_update' class='btn btn-warning' style='margin-left:1px;' onclick='updateBtn(" + result.sr[i].sr_id + ");'><span class='glyphicon glyphicon-pencil'></span></button> <button id='button_delete' class='btn btn-danger' style='margin-left:1px;' onclick='deleteBtn(" + result.sr[i].sr_id + ");'><span class='glyphicon glyphicon-trash'></span></button> <a href='/model?sr_id=" + result.sr[i].sr_id + "' id='button_info' class='btn btn-info' style='margin-left:1px;'><span class='glyphicon glyphicon-info-sign'></span></a></div>"
+            //   );
+            // }
+            alert("수정 완료");
+            location.reload();
+          }
+        });
+      }
+
+      function deleteBtn(sr_id){
+        $.ajax({
+          url: '/series/delete',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'sr_id': sr_id,
+            'br_id': <%=br_id%>
+          },
+          success: function(result){
+            // $('#list').empty();
+            // for(var i = 0; i < result.sr.length; i++){
+            //   $('#list').append(
+            //     "<div style='float:left;margin:5px;'><input id='" + result.sr[i].sr_id + "' type='text' value='" + result.sr[i].sr_name + "' size='5'> <button id='button_update' class='btn btn-warning' style='margin-left:1px;' onclick='updateBtn(" + result.sr[i].sr_id + ");'><span class='glyphicon glyphicon-pencil'></span></button> <button id='button_delete' class='btn btn-danger' style='margin-left:1px;' onclick='deleteBtn(" + result.sr[i].sr_id + ");'><span class='glyphicon glyphicon-trash'></span></button> <a href='/model?sr_id=" + result.sr[i].sr_id + "' id='button_info' class='btn btn-info' style='margin-left:1px;'><span class='glyphicon glyphicon-info-sign'></span></a></div>"
+            //   );
+            // }
+            location.reload();
+          }
+        });
+      }
+
+    </script>
+    <!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

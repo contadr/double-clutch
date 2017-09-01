@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%=br_korName%></title>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <script type="text/javascript" src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+
+  </head>
+  <body style="padding: 10px;">
+    <a href="/admin" style="float:left;">Preview</a>
+    <a href="/login/logout" style="float:right;">Logout</a><br><br>
+
+    <div class="container" style="padding: 0px;">
+      <h2><img src="/images/<%=br_id%>/<%=br_engName%>.jpg" style="width:50px;height:50px;"> :: <%=br_id%> :: <%=br_korName%></h2>
+      <div>
+        <select id="lu_cartype" class="form-control" style="width:85px;float:left;margin-right:3px;">
+          <option value="0">차종</option>
+          <option value="1">경차</option>
+          <option value="2">소형</option>
+          <option value="3">준중형</option>
+          <option value="4">중형</option>
+          <option value="5">대형</option>
+          <option value="6">스포츠카</option>
+          <option value="7">SUV</option>
+          <option value="8">전기차</option>
+          <option value="9">컨셉트카</option>
+          <option value="10">올드카</option>
+          <option value="11">트럭</option>
+          <option value="12">버스</option>
+          <option value="13">웨건</option>
+          <option value="14">해치백</option>
+          <option value="15">승합차</option>
+          <option value="16">컨버터블</option>
+        </select>
+        <input class="form-control" type="text" id="lu_name" style="width:120px;float:left;margin-right:3px;">
+        <button id="button_insert" class="btn btn-primary" onclick="insertBtn();" style="float:left;"><span class="glyphicon glyphicon-plus"></span></button>
+      </div><br><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>경차 :: 1</h3>
+        <%
+          for(var i = 0; i < cart1.length; i++){
+            var ct1 = cart1[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct1.lu_id%>" type="text" value="<%=ct1.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct1.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct1.lu_id%>, 1);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct1.lu_id%>&lu_name=<%=ct1.lu_name%>&cartype=경형&cartypeid=1" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>소형 :: 2</h3>
+        <%
+          for(var i = 0; i < cart2.length; i++){
+            var ct2 = cart2[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct2.lu_id%>" type="text" value="<%=ct2.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct2.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct2.lu_id%>, 2);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct2.lu_id%>&lu_name=<%=ct2.lu_name%>&cartype=소형&cartypeid=2" id="button_info" class="btn btn-info" ><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>준중형 :: 3</h3>
+        <%
+          for(var i = 0; i < cart3.length; i++){
+            var ct3 = cart3[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct3.lu_id%>" type="text" value="<%=ct3.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct3.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct3.lu_id%>, 3);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct3.lu_id%>&lu_name=<%=ct3.lu_name%>&cartype=준중형&cartypeid=3" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>중형 :: 4</h3>
+        <%
+          for(var i = 0; i < cart4.length; i++){
+            var ct4 = cart4[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct4.lu_id%>" type="text" value="<%=ct4.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct4.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct4.lu_id%>, 4);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct4.lu_id%>&lu_name=<%=ct4.lu_name%>&cartype=중형&cartypeid=4" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>대형 :: 5</h3>
+        <%
+          for(var i = 0; i < cart5.length; i++){
+            var ct5 = cart5[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct5.lu_id%>" type="text" value="<%=ct5.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct5.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct5.lu_id%>, 5);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct5.lu_id%>&lu_name=<%=ct5.lu_name%>&cartype=대형&cartypeid=5" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>스포츠카 :: 6</h3>
+        <%
+          for(var i = 0; i < cart6.length; i++){
+            var ct6 = cart6[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct6.lu_id%>" type="text" value="<%=ct6.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct6.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct6.lu_id%>, 6);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct6.lu_id%>&lu_name=<%=ct6.lu_name%>&cartype=스포츠카&cartypeid=6" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>SUV :: 7</h3>
+        <%
+          for(var i = 0; i < cart7.length; i++){
+            var ct7 = cart7[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct7.lu_id%>" type="text" value="<%=ct7.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct7.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct7.lu_id%>, 7);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct7.lu_id%>&lu_name=<%=ct7.lu_name%>&cartype=SUV&cartypeid=7" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>전기차 :: 8</h3>
+        <%
+          for(var i = 0; i < cart8.length; i++){
+            var ct8 = cart8[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct8.lu_id%>" type="text" value="<%=ct8.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct8.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct8.lu_id%>, 8);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct8.lu_id%>&lu_name=<%=ct8.lu_name%>&cartype=전기&cartypeid=8" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>컨셉트카 :: 9</h3>
+        <%
+          for(var i = 0; i < cart9.length; i++){
+            var ct9 = cart9[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct9.lu_id%>" type="text" value="<%=ct9.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct9.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct9.lu_id%>, 9);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct9.lu_id%>&lu_name=<%=ct9.lu_name%>&cartype=컨셉트&cartypeid=9" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>올드카 :: 10</h3>
+        <%
+          for(var i = 0; i < cart10.length; i++){
+            var ct10 = cart10[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct10.lu_id%>" type="text" value="<%=ct10.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct10.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct10.lu_id%>, 10);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct10.lu_id%>&lu_name=<%=ct10.lu_name%>&cartype=옛날차&cartypeid=10" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>트럭 :: 11</h3>
+        <%
+          for(var i = 0; i < cart11.length; i++){
+            var ct11 = cart11[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct11.lu_id%>" type="text" value="<%=ct11.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct11.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct11.lu_id%>, 11);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct11.lu_id%>&lu_name=<%=ct11.lu_name%>&cartype=트럭&cartypeid=11" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>버스 :: 12</h3>
+        <%
+          for(var i = 0; i < cart12.length; i++){
+            var ct12 = cart12[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct12.lu_id%>" type="text" value="<%=ct12.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct12.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct12.lu_id%>, 12);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct12.lu_id%>&lu_name=<%=ct12.lu_name%>&cartype=버스&cartypeid=12" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>웨건 :: 13</h3>
+        <%
+          for(var i = 0; i < cart13.length; i++){
+            var ct13 = cart13[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct13.lu_id%>" type="text" value="<%=ct13.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct13.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct13.lu_id%>, 13);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct13.lu_id%>&lu_name=<%=ct13.lu_name%>&cartype=웨건&cartypeid=13" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>해치백 :: 14</h3>
+        <%
+          for(var i = 0; i < cart14.length; i++){
+            var ct14 = cart14[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct14.lu_id%>" type="text" value="<%=ct14.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct14.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct14.lu_id%>, 14);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct14.lu_id%>&lu_name=<%=ct14.lu_name%>&cartype=해치백&cartypeid=14" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>승합차 :: 15</h3>
+        <%
+          for(var i = 0; i < cart15.length; i++){
+            var ct15 = cart15[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct15.lu_id%>" type="text" value="<%=ct15.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct15.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct15.lu_id%>, 15);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct15.lu_id%>&lu_name=<%=ct15.lu_name%>&cartype=승합차&cartypeid=15" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+      <div style="border-top:solid 2px #e8e8e8; overflow: hidden;">
+        <h3>컨버터블 :: 16</h3>
+        <%
+          for(var i = 0; i < cart16.length; i++){
+            var ct16 = cart16[i];
+        %>
+        <div style="float:left;margin:5px;">
+          <input class="form-control" id="<%=ct16.lu_id%>" type="text" value="<%=ct16.lu_name%>" style="width:120px;float:left;margin-right: 3px;">
+          <button id="button_update" class="btn btn-warning" onclick="updateBtn(<%=ct16.lu_id%>);"><span class="glyphicon glyphicon-pencil"></span></button>
+          <button id="button_delete" class="btn btn-danger" onclick="deleteBtn(<%=ct16.lu_id%>, 15);"><span class="glyphicon glyphicon-trash"></span></button>
+          <a href="/model?br_engName=<%=br_engName%>&br_korName=<%=br_korName%>&br_id=<%=br_id%>&lu_id=<%=ct16.lu_id%>&lu_name=<%=ct16.lu_name%>&cartype=컨버터블&cartypeid=16" id="button_info" class="btn btn-info"><span class="glyphicon glyphicon-folder-open"></span></a>
+        </div>
+        <%}%>
+      </div><br><br>
+
+    </div>
+
+    <script type="text/javascript">
+
+      function insertBtn(){
+
+        if($('#lu_cartype').val() == 0){
+          alert('차종을 선택해주세요.');
+        }else{
+          if($('#lu_name').val().replace(/\s/g,"").length == 0){
+            alert("공백 불가");
+            $('#lu_name').val('');
+            $('#lu_name').focus();
+          }else{
+            $.ajax({
+              url: '/lineup/insert',
+              dataType: 'json',
+              type: 'POST',
+              data: {
+                'lu_name': $('#lu_name').val(),
+                'br_id': <%=br_id%>,
+                'lu_cartype': $('#lu_cartype').val()
+              },
+              success: function(result){
+                location.reload();
+              }
+            });
+          }
+        }
+      }
+
+      function updateBtn(lu_id){
+        $.ajax({
+          url: '/lineup/update',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': lu_id,
+            'br_id': <%=br_id%>,
+            'lu_name': $('#' + lu_id + '').val()
+          },
+          success: function(result){
+            alert("수정 완료");
+            location.reload();
+          }
+        });
+      }
+
+      function deleteBtn(lu_id, cartype){
+        $.ajax({
+          url: '/lineup/delete',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': lu_id,
+            'br_id': <%=br_id%>,
+            'cartype': cartype
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+      function dirBtn(lu_id, cartype){
+        $.ajax({
+          url: '/lineup/dir',
+          dataType: 'json',
+          type: 'POST',
+          data: {
+            'lu_id': lu_id,
+            'br_id': <%=br_id%>,
+            'cartype': cartype
+          },
+          success: function(result){
+            location.reload();
+          }
+        });
+      }
+
+    </script>
+    <!-- /container -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    <!-- 모든 컴파일된 플러그인을 포함합니다 (아래), 원하지 않는다면 필요한 각각의 파일을 포함하세요 -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+  </body>
+</html>

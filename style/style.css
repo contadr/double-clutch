@@ -1,0 +1,14 @@
+@font-face {
+  font-family: "GoDoM";
+  src: url("../fonts/GodoM.ttf");
+}
+
+body {
+	padding: 0.5rem;
+  	font-family: "GoDoM", serif;
+  	color: #595959;
+}
+
+input {
+	text-align: center;
+}
